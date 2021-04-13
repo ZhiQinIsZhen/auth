@@ -1,0 +1,5 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.liyz.auth.security.client.config.SecurityClientBeansConfig,\
+com.liyz.auth.security.client.config.WebSecurityClientConfig,\
+com.liyz.auth.security.client.impl.UserDetailsServiceImpl
