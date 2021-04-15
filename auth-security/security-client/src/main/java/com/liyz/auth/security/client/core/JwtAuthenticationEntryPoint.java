@@ -1,6 +1,9 @@
 package com.liyz.auth.security.client.core;
 
-import com.liyz.auth.security.client.util.AuthenticationResponseUtil;
+import com.liyz.auth.common.base.result.Result;
+import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
+import com.liyz.auth.common.util.JsonMapperUtil;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -23,6 +26,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        AuthenticationResponseUtil.authForbidden(httpServletResponse);
+        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        httpServletResponse.getWriter().write(JsonMapperUtil.toJSONString(Result.error(CommonExceptionCodeEnum.AuthorizationFail)));
     }
 }

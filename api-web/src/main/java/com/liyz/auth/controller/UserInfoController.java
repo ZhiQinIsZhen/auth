@@ -2,7 +2,6 @@ package com.liyz.auth.controller;
 
 import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
-import com.liyz.auth.security.base.annotation.Anonymous;
 import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.vo.UserInfoVO;
 import io.swagger.annotations.*;
@@ -33,8 +32,6 @@ import java.util.Objects;
 @RequestMapping("/user")
 public class UserInfoController {
 
-
-    @Anonymous
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
     @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
@@ -42,7 +39,6 @@ public class UserInfoController {
     public Result<UserInfoVO> info() {
         return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));
     }
-
 
     @ApiOperation(value = "获取登陆的用户ID", notes = "获取登陆的用户ID")
     @GetMapping("/id")

@@ -1,18 +1,14 @@
 package com.liyz.auth.security.server.parse;
 
-import com.liyz.auth.security.base.constant.SecurityConstant;
-import com.liyz.auth.security.base.user.AuthUserDetails;
+import com.liyz.auth.common.util.DateUtil;
+import com.liyz.auth.security.base.user.ClaimDetail;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mobile.device.Device;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,13 +26,8 @@ public class JwtAccessTokenParser {
     @Value("${jwt.expiration:604800}")
     private Long expiration;
 
-    private static final String CLAIM_KEY_CREATED = "created";
-    private static final String CLAIM_KEY_USER_ID = "userId";
-
-    private static final String AUDIENCE_UNKNOWN = "unknown";
-    private static final String AUDIENCE_WEB = "web";
-    private static final String AUDIENCE_MOBILE = "mobile";
-    private static final String AUDIENCE_TABLET = "tablet";
+    private final static String CLAIM_DEVICE = "device";
+    private final static String CLAIM_USER_ID = "userId";
 
     /**
      * 获取token 用户名
@@ -44,15 +35,11 @@ public class JwtAccessTokenParser {
      * @param token
      * @return
      */
-    public String getUsernameFromToken(final String token) {
+    public String getUsernameByToken(final String token) {
         String username = null;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            if (Objects.nonNull(claims)) {
-                username = claims.getSubject();
-            }
-        } catch (Exception e) {
-            username = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
+            username = claims.getSubject();
         }
         return username;
     }
@@ -63,13 +50,11 @@ public class JwtAccessTokenParser {
      * @param token
      * @return
      */
-    public Date getCreatedDateFromToken(final String token) {
-        Date created;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            created = new Date((Long) claims.get(CLAIM_KEY_CREATED));
-        } catch (Exception e) {
-            created = null;
+    public Date getCreationByToken(final String token) {
+        Date created = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
+            created = claims.getIssuedAt();
         }
         return created;
     }
@@ -80,13 +65,11 @@ public class JwtAccessTokenParser {
      * @param token
      * @return
      */
-    public Date getExpirationDateFromToken(final String token) {
-        Date expiration;
-        try {
-            final Claims claims = getClaimsFromToken(token);
+    public Date getExpirationByToken(final String token) {
+        Date expiration = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
             expiration = claims.getExpiration();
-        } catch (Exception e) {
-            expiration = null;
         }
         return expiration;
     }
@@ -97,15 +80,33 @@ public class JwtAccessTokenParser {
      * @param token
      * @return
      */
-    public String getAudienceFromToken(final String token) {
-        String audience;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            audience = claims.getAudience();
-        } catch (Exception e) {
-            audience = null;
+    public Integer getDeviceByToken(final String token) {
+        Integer device = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
+            device = claims.get(CLAIM_DEVICE, Integer.class);
         }
-        return audience;
+        return device;
+    }
+
+    /**
+     * 获取认证信息
+     *
+     * @param token
+     * @return
+     */
+    public ClaimDetail getDetailByToken(final String token) {
+        ClaimDetail claimDetail = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
+            claimDetail = new ClaimDetail();
+            claimDetail.setUsername(claims.getSubject());
+            claimDetail.setUserId(claims.get(CLAIM_USER_ID, Long.class));
+            claimDetail.setDevice(claims.get(CLAIM_DEVICE, Integer.class));
+            claimDetail.setCreation(claims.getIssuedAt());
+            claimDetail.setExpiration(claims.getExpiration());
+        }
+        return claimDetail;
     }
 
     /**
@@ -114,9 +115,9 @@ public class JwtAccessTokenParser {
      * @param token
      * @return
      */
-    private Boolean isTokenExpired(final String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
+    public Boolean isTokenExpired(final String token) {
+        final Date expiration = getExpirationByToken(token);
+        return Objects.nonNull(expiration) ? expiration.before(new Date()) : Boolean.TRUE;
     }
 
     /**
@@ -138,31 +139,16 @@ public class JwtAccessTokenParser {
     /**
      * 生成token
      *
-     * @param userDetails
-     * @param device
-     * @param date
-     * @param userId
+     * @param claimDetail
      * @return
      */
-    public String generateToken(final UserDetails userDetails, final Device device, final Date date, final Long userId) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(Claims.SUBJECT, userDetails.getUsername());
-        claims.put(Claims.AUDIENCE, generateAudience(device));
-        claims.put(CLAIM_KEY_CREATED, date);
-        claims.put(CLAIM_KEY_USER_ID, userId);
+    public String generateToken(final ClaimDetail claimDetail) {
+        Claims claims = Jwts.claims()
+                .setSubject(claimDetail.getUsername())
+                .setIssuedAt(DateUtil.currentDate());
+        claims.put(CLAIM_DEVICE, claimDetail.getDevice());
+        claims.put(CLAIM_USER_ID, claimDetail.getUserId());
         return generateToken(claims);
-    }
-
-    private String generateAudience(final Device device) {
-        String audience = AUDIENCE_UNKNOWN;
-        if (device.isNormal()) {
-            audience = AUDIENCE_WEB;
-        } else if (device.isTablet()) {
-            audience = AUDIENCE_TABLET;
-        } else if (device.isMobile()) {
-            audience = AUDIENCE_MOBILE;
-        }
-        return audience;
     }
 
     /**
@@ -171,7 +157,7 @@ public class JwtAccessTokenParser {
      * @param claims
      * @return
      */
-    private String generateToken(final Map<String, Object> claims) {
+    private String generateToken(final Claims claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
@@ -186,13 +172,11 @@ public class JwtAccessTokenParser {
      * @return
      */
     public String refreshToken(final String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = getClaimsFromToken(token);
-            claims.put(CLAIM_KEY_CREATED, new Date());
+        String refreshedToken = null;
+        final Claims claims = getClaimsFromToken(token);
+        if (Objects.nonNull(claims)) {
+            claims.setIssuedAt(DateUtil.currentDate());
             refreshedToken = generateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
         }
         return refreshedToken;
     }
@@ -204,42 +188,5 @@ public class JwtAccessTokenParser {
      */
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + expiration * 1000);
-    }
-
-    /**
-     * 验证token
-     *
-     * @param token
-     * @param userDetails
-     * @param device
-     * @return
-     */
-    public Integer validateToken(final String token, final UserDetails userDetails, final Device device) {
-        AuthUserDetails user = (AuthUserDetails) userDetails;
-        final String username = getUsernameFromToken(token);
-        final Date created = getCreatedDateFromToken(token);
-
-        Date lastPasswordResetDate;
-        if (device.isMobile()) {
-            lastPasswordResetDate = user.getLastAppPasswordResetDate();
-        } else {
-            lastPasswordResetDate = user.getLastWebPasswordResetDate();
-        }
-        return username.equals(user.getUsername()) ? !isTokenExpired(token)
-                ? !isCreatedBeforeLastPasswordReset(created, lastPasswordResetDate)
-                ? SecurityConstant.VALIDATE_TOKEN_SUCCESS : SecurityConstant.VALIDATE_TOKEN_FAIL_OTHER_LOGIN
-                : SecurityConstant.VALIDATE_TOKEN_FAIL_EXPIRED : SecurityConstant.VALIDATE_TOKEN_FAIL_USERNAME;
-
-    }
-
-    /**
-     * 创建时间是否在上次设备登陆时间之前
-     *
-     * @param created
-     * @param lastPasswordReset
-     * @return
-     */
-    private Boolean isCreatedBeforeLastPasswordReset(final Date created, final Date lastPasswordReset) {
-        return (created == null || lastPasswordReset == null || created.before(lastPasswordReset));
     }
 }

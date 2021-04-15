@@ -1,7 +1,7 @@
 package com.liyz.auth.security.base.remote;
 
 import com.liyz.auth.security.base.user.AuthUser;
-import org.springframework.mobile.device.Device;
+import com.liyz.auth.security.base.user.ClaimDetail;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -13,7 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface RemoteJwtAuthService {
 
+    AuthUser loadUserByUsername(final String username);
+
     AuthUser loadUserByToken(final String token);
 
-    Integer validateToken(final String token, final UserDetails userDetails, final Device device);
+    String getJWT(final ClaimDetail claimDetail);
+
+    Integer validateToken(final String token, final UserDetails userDetails, final Integer device);
 }

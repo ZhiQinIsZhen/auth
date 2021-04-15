@@ -22,4 +22,7 @@ public interface CommonConstant {
     String REQUEST_ID = "request_id";
 
     String DEFAULT_JOINER = ":";
+
+    Integer DEVICE_WEB = 1;
+    Integer DEVICE_MOBILE = 2;
 }

@@ -1,10 +1,12 @@
 package com.liyz.auth.security.client.filter;
 
-import com.liyz.auth.security.client.AuthContext;
+import com.google.common.base.Charsets;
+import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.AuthUserDetails;
+import com.liyz.auth.security.client.AuthContext;
+import com.liyz.auth.security.client.context.JwtContextHolder;
+import com.liyz.auth.security.client.impl.UserDetailsServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.LiteDeviceResolver;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,14 +42,18 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             //处理request head信息
-            String tokenHeaderKey = httpServletRequest.getHeader(this.tokenHeaderKey);
-            if (StringUtils.isNotBlank(tokenHeaderKey)) {
-                tokenHeaderKey = URLDecoder.decode(tokenHeaderKey, "UTF-8");
-                final AuthUserDetails userDetails = (AuthUserDetails) userDetailsService.loadUserByUsername(tokenHeaderKey);
-                if (Objects.nonNull(userDetails)) {
-                    Device device = new LiteDeviceResolver().resolveDevice(httpServletRequest);
+            String token = httpServletRequest.getHeader(this.tokenHeaderKey);
+            if (StringUtils.isNotBlank(token)) {
+                token = URLDecoder.decode(token, String.valueOf(Charsets.UTF_8));
+                final AuthUser authUser = JwtContextHolder.getJwtAuthService().loadUserByToken(token);
+                if (Objects.nonNull(authUser)) {
+                    AuthContext.setAuthUser(authUser);
+                    AuthUserDetails authUserDetails = UserDetailsServiceImpl.getByAuthUser(authUser);
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(
+                                    authUserDetails,
+                                    null,
+                                    authUserDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

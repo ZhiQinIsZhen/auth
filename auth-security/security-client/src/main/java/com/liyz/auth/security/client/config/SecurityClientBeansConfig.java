@@ -4,6 +4,7 @@ import com.liyz.auth.security.client.core.RestfulAccessDeniedHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Slf4j
 @Configuration
+@ComponentScan(value = {"com.liyz.auth.security.client"})
 public class SecurityClientBeansConfig {
 
     @Bean
     @ConditionalOnMissingBean(PasswordEncoder.class)
     public PasswordEncoder passwordEncoder() {
-        log.info("....client init");
         return new BCryptPasswordEncoder();
     }
 

@@ -1,10 +1,10 @@
 package com.liyz.auth.security.client.config;
 
+import com.liyz.auth.common.util.JsonMapperUtil;
+import com.liyz.auth.security.base.constant.SecurityConstant;
 import com.liyz.auth.security.client.core.AccessDecisionManagerImpl;
 import com.liyz.auth.security.client.core.JwtAuthenticationEntryPoint;
 import com.liyz.auth.security.client.core.RestfulAccessDeniedHandler;
-import com.liyz.auth.common.util.JsonMapperUtil;
-import com.liyz.auth.security.base.constant.SecurityConstant;
 import com.liyz.auth.security.client.filter.GrantedAuthoritySecurityInterceptor;
 import com.liyz.auth.security.client.filter.JwtAuthenticationTokenFilter;
 import com.liyz.auth.security.client.util.AnonymousUrlsUtil;
@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -44,9 +45,9 @@ public class WebSecurityClientConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.tokenHeader.key:Authorization}")
     private String tokenHeaderKey;
 
-    @Autowired
+    @Resource
     private PasswordEncoder passwordEncoder;
-    @Autowired
+    @Resource
     private UserDetailsService userDetailsService;
 
     @Bean

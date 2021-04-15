@@ -1,12 +1,10 @@
 package com.liyz.auth.common.base.util;
 
-import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.liyz.auth.common.base.constant.CommonConstant;
 import com.liyz.auth.common.base.cglib.PageCopier;
-import com.liyz.auth.common.base.cglib.PageInfoCopier;
 import com.liyz.auth.common.base.cglib.SimpleBeanCopier;
 import com.liyz.auth.common.base.result.PageResult;
 import com.liyz.auth.common.remote.page.Page;
@@ -86,26 +84,6 @@ public final class CommonCloneUtil {
     }
 
     /**
-     * pageInfo对象拷贝{@link PageInfo}
-     *
-     * @param sourcePage
-     * @param targetClass
-     * @param <T>
-     * @param <Y>
-     * @return
-     */
-    public static <T,Y> PageInfo<Y> pageClone(PageInfo<T> sourcePage, Class<Y> targetClass) {
-        if (sourcePage == null) {
-            return null;
-        }
-        if (sourcePage.getSize() == 0) {
-            return objectClone(sourcePage, PageInfo.class);
-        }
-        SimpleBeanCopier simpleBeanCopier = getCopier(sourcePage.getList().get(0).getClass(), targetClass);
-        return PageInfoCopier.transform(sourcePage, simpleBeanCopier);
-    }
-
-    /**
      * page{@link org.springframework.data.domain.Page}对象拷贝
      *
      * @param sourcePage
@@ -167,26 +145,6 @@ public final class CommonCloneUtil {
         }
         pageResult.setData(yList);
         return pageResult;
-    }
-
-    /**
-     * pageInfo{@link PageInfo}拷贝成page{@link Page}对象
-     *
-     * @param sourcePage
-     * @param targetClass
-     * @param <T>
-     * @param <Y>
-     * @return
-     */
-    public static <T, Y> Page<Y> pageInfoToPage(PageInfo<T> sourcePage, Class<Y> targetClass) {
-        if (sourcePage == null) {
-            return null;
-        }
-        if (sourcePage.getSize() == 0) {
-            return objectClone(sourcePage, Page.class);
-        }
-        SimpleBeanCopier simpleBeanCopier = getCopier(sourcePage.getList().get(0).getClass(), targetClass);
-        return PageInfoCopier.transformPage(sourcePage, simpleBeanCopier);
     }
 
     /**

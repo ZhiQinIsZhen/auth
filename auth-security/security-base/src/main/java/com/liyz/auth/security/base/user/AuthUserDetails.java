@@ -1,6 +1,7 @@
 package com.liyz.auth.security.base.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -39,6 +40,10 @@ public class AuthUserDetails extends User {
      */
     private final String mobile;
 
+    private final String loginName;
+
+    private final String nikeName;
+
     /**
      * 最新的web登陆时间
      */
@@ -49,28 +54,31 @@ public class AuthUserDetails extends User {
      */
     private final Date lastAppPasswordResetDate;
 
-
-    public AuthUserDetails(Long id, Integer roleId, String username, String password, String mobile, String email,
-                            Collection<? extends GrantedAuthority> authorities, Date lastWebPasswordResetDate,
-                            Date lastAppPasswordResetDate) {
+    public AuthUserDetails(Long id, Integer roleId, String username, String password, String mobile, String email, String loginName,
+                           String nikeName, Collection<? extends GrantedAuthority> authorities, Date lastWebPasswordResetDate,
+                           Date lastAppPasswordResetDate) {
         super(username, password, authorities);
         this.id = id;
         this.roleId = roleId;
         this.mobile = mobile;
         this.email = email;
+        this.loginName = loginName;
+        this.nikeName = nikeName;
         this.lastWebPasswordResetDate = lastWebPasswordResetDate;
         this.lastAppPasswordResetDate = lastAppPasswordResetDate;
     }
 
-    public AuthUserDetails(Long id, Integer roleId, String username, String password, String mobile, String email,
+    public AuthUserDetails(Long id, Integer roleId, String username, String password, String mobile, String email, String loginName,
                             boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
-                            Collection<? extends GrantedAuthority> authorities, Date lastWebPasswordResetDate,
+                            String nikeName, Collection<? extends GrantedAuthority> authorities, Date lastWebPasswordResetDate,
                             Date lastAppPasswordResetDate) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
         this.roleId = roleId;
         this.mobile = mobile;
         this.email = email;
+        this.loginName = loginName;
+        this.nikeName = nikeName;
         this.lastWebPasswordResetDate = lastWebPasswordResetDate;
         this.lastAppPasswordResetDate = lastAppPasswordResetDate;
     }
