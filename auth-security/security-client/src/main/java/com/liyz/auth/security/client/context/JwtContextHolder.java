@@ -7,6 +7,7 @@ import com.liyz.auth.security.base.remote.RemoteJwtAuthService;
 import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2021/4/15 9:45
  */
 @Configuration
-public class JwtContextHolder implements ApplicationContextAware {
+public class JwtContextHolder implements ApplicationContextAware, InitializingBean {
 
     private static ApplicationContext applicationContext;
 
@@ -51,5 +52,14 @@ public class JwtContextHolder implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    private static RemoteJwtAuthService remoteJwtAuthService;
+    private static RemoteGrantedAuthorityService remoteGrantedAuthorityService;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        remoteJwtAuthService = applicationContext.getBean("remoteJwtAuthService", RemoteJwtAuthService.class);
+        remoteGrantedAuthorityService = applicationContext.getBean("remoteGrantedAuthorityService", RemoteGrantedAuthorityService.class);
     }
 }
