@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @JacksonAnnotationsInside
 public @interface Desensitization {
 
-    DesensitizationType value() default DesensitizationType.SELF_DEFINITION;
+    DesensitizationType value() default DesensitizationType.DEFAULT;
 
     int beginIndex() default 0;
 

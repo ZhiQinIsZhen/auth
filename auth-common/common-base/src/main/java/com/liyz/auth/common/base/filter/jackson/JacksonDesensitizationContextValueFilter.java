@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.liyz.auth.common.base.desen.Desensitization;
-import com.liyz.auth.common.base.desen.DesensitizeService;
+import com.liyz.auth.common.base.desen.DesensitizeStrategy;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2020/6/2 16:22
  */
-public class JacksonDesensitizationContextValueFilter extends JsonSerializer<String> implements ContextualSerializer, DesensitizeService {
+public class JacksonDesensitizationContextValueFilter extends JsonSerializer<String> implements ContextualSerializer {
 
     private Desensitization annotation;
 
@@ -27,7 +27,7 @@ public class JacksonDesensitizationContextValueFilter extends JsonSerializer<Str
         if (annotation == null) {
             return;
         }
-        jsonGenerator.writeString(desensitize(s, annotation));
+        jsonGenerator.writeString(DesensitizeStrategy.getService(annotation.value()).desensitize(s, annotation));
     }
 
     @Override

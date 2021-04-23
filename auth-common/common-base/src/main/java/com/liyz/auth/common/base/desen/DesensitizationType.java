@@ -8,6 +8,7 @@ package com.liyz.auth.common.base.desen;
  * @date 2019/8/14 19:55
  */
 public enum DesensitizationType {
+    DEFAULT,
     MOBILE,
     EMAIL,
     REAL_NAME,
