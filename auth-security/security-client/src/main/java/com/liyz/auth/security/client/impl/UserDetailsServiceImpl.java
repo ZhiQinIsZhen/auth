@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.base.user.GrantedAuthority;
-import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.security.client.AuthGrantedAuthority;
 import com.liyz.auth.security.client.context.JwtContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
         AuthUser authUser = getUserByUsername(username);
-        AuthContext.setAuthUser(authUser);
         UserDetails userDetails = getByAuthUser(authUser);
         return userDetails;
     }
