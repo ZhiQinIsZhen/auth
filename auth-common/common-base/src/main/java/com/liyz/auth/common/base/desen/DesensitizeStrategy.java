@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.liyz.auth.common.base.desen.type.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.dubbo.common.logger.Logger;
+import org.apache.dubbo.common.logger.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
@@ -18,6 +20,8 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DesensitizeStrategy {
+
+    private static Logger logger = LoggerFactory.getLogger(DesensitizeStrategy.class);
 
     private static volatile Map<DesensitizationType, DesensitizeService> map = Maps.newHashMap();
 
@@ -51,5 +55,11 @@ public class DesensitizeStrategy {
             return map.get(DesensitizationType.DEFAULT);
         }
         return desensitizeService;
+    }
+
+    static {
+        logger.info("init DesensitizeStrategy start ...");
+        DesensitizeStrategy.init();
+        logger.info("init DesensitizeStrategy success ...");
     }
 }
