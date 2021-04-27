@@ -36,4 +36,6 @@ public interface IUserInfoService {
      * @return
      */
     Page<UserInfoDO> page(Integer pageNum, Integer pageSize);
+
+    boolean updateByUsername(String username);
 }

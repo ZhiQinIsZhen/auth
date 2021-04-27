@@ -145,7 +145,7 @@ public class JwtAccessTokenParser {
     public String generateToken(final ClaimDetail claimDetail) {
         Claims claims = Jwts.claims()
                 .setSubject(claimDetail.getUsername())
-                .setIssuedAt(DateUtil.currentDate());
+                .setIssuedAt(claimDetail.getCreation());
         claims.put(CLAIM_DEVICE, claimDetail.getDevice());
         claims.put(CLAIM_USER_ID, claimDetail.getUserId());
         return generateToken(claims);

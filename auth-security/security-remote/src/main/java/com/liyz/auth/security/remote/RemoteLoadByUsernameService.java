@@ -11,5 +11,7 @@ import com.liyz.auth.security.remote.bo.AuthUserBO;
  */
 public interface RemoteLoadByUsernameService {
 
+    AuthUserBO login(String username);
+
     AuthUserBO loadByUsername(String username);
 }

@@ -16,6 +16,7 @@ import org.springframework.mobile.device.LiteDeviceResolver;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * 注释:
@@ -37,7 +38,7 @@ public class JwtContextHolder implements ApplicationContextAware, InitializingBe
         return applicationContext.getBean("remoteGrantedAuthorityService", RemoteGrantedAuthorityService.class);
     }
 
-    public static String getJWT() {
+    public static String getJWT(Date lastLoginTime) {
         HttpServletRequest httpServletRequest = HttpRequestUtil.getRequest();
         LiteDeviceResolver resolver = new LiteDeviceResolver();
         Device device = resolver.resolveDevice(httpServletRequest);
@@ -46,6 +47,7 @@ public class JwtContextHolder implements ApplicationContextAware, InitializingBe
         claimDetail.setDevice(device.isMobile() ? CommonConstant.DEVICE_MOBILE : CommonConstant.DEVICE_WEB);
         claimDetail.setUsername(authUserDetails.getLoginName());
         claimDetail.setUserId(authUserDetails.getId());
+        claimDetail.setCreation(lastLoginTime);
         return getJwtAuthService().getJWT(claimDetail);
     }
 

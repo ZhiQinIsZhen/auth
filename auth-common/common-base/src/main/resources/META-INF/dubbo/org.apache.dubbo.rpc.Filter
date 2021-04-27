@@ -1,1 +1,1 @@
-remoteServiceExceptionFilter=RemoteServiceExceptionFilter
+remoteServiceExceptionFilter=com.liyz.auth.common.base.filter.dubbo.RemoteServiceExceptionFilter

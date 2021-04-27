@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return
      */
     private AuthUser getUserByUsername(String username) {
-        AuthUser authUser = JwtContextHolder.getJwtAuthService().loadUserByUsername(username);
+        AuthUser authUser = JwtContextHolder.getJwtAuthService().login(username);
         if (Objects.isNull(authUser)) {
             throw new UsernameNotFoundException("No user found with token !");
         }

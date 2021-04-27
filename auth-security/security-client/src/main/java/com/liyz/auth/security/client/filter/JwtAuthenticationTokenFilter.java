@@ -1,12 +1,17 @@
 package com.liyz.auth.security.client.filter;
 
 import com.google.common.base.Charsets;
+import com.liyz.auth.common.base.result.Result;
+import com.liyz.auth.common.remote.exception.RemoteServiceException;
+import com.liyz.auth.common.util.JsonMapperUtil;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.security.client.context.JwtContextHolder;
 import com.liyz.auth.security.client.impl.UserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +33,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2021/4/12 15:27
  */
+@Slf4j
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final String tokenHeaderKey;
@@ -59,6 +65,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
+        } catch (RemoteServiceException exception) {
+            httpServletResponse.setCharacterEncoding(String.valueOf(Charsets.UTF_8));
+            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            httpServletResponse.getWriter().println(JsonMapperUtil.toJSONString(Result.error(exception.getCode(),
+                    exception.getMessage())));
+            httpServletResponse.getWriter().flush();
         } finally {
             AuthContext.remove();
         }

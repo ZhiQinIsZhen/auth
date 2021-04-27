@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface RemoteJwtAuthService {
 
+    AuthUser login(final String username);
+
     AuthUser loadUserByUsername(final String username);
 
     AuthUser loadUserByToken(final String token);

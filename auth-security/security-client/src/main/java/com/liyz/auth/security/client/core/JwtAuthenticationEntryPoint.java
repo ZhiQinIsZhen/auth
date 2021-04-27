@@ -2,6 +2,7 @@ package com.liyz.auth.security.client.core;
 
 import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
+import com.liyz.auth.common.remote.exception.RemoteServiceException;
 import com.liyz.auth.common.util.JsonMapperUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
