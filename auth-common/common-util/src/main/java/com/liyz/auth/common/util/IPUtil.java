@@ -1,4 +1,4 @@
-package com.liyz.auth.common.base.util;
+package com.liyz.auth.common.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

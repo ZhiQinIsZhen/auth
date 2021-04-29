@@ -1,0 +1,5 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.liyz.auth.common.limit.auto.LimitAutoConfiguration,\
+com.liyz.auth.common.limit.aspect.LimitCaffeineAspect,\
+com.liyz.auth.common.limit.aspect.LimitGuavaAspect

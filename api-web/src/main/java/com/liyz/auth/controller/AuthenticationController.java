@@ -1,6 +1,9 @@
 package com.liyz.auth.controller;
 
 import com.liyz.auth.common.base.result.Result;
+import com.liyz.auth.common.limit.annotation.Limit;
+import com.liyz.auth.common.limit.annotation.Limits;
+import com.liyz.auth.common.limit.enums.LimitType;
 import com.liyz.auth.dto.LoginDTO;
 import com.liyz.auth.security.base.annotation.Anonymous;
 import com.liyz.auth.security.base.user.AuthUserDetails;
@@ -46,6 +49,7 @@ public class AuthenticationController {
     @Resource
     private AuthenticationManager authenticationManager;
 
+    @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 1, type = LimitType.TOTAL), @Limit(count = 1)})
     @Anonymous
     @ApiOperation(value = "登陆", notes = "登陆")
     @PostMapping("/login")

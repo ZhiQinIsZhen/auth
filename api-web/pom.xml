@@ -30,6 +30,11 @@
             <version>${revision}</version>
         </dependency>
         <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>common-limit</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>

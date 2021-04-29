@@ -29,7 +29,7 @@ import java.util.TimeZone;
 @Slf4j
 @Configuration
 @AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
-@ComponentScan(basePackages = {"com.liyz.auth"})
+@ComponentScan(basePackages = {"com.liyz.auth.common.controller"})
 public class WebMvcAutoConfig extends WebMvcConfigurationSupport {
 
     /**
