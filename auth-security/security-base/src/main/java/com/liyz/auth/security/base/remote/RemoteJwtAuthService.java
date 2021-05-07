@@ -17,6 +17,10 @@ public interface RemoteJwtAuthService {
 
     AuthUser loadUserByUsername(final String username);
 
+    AuthUser loginByStaff(final String username);
+
+    AuthUser loadUserByUsernameByStaff(final String username);
+
     AuthUser loadUserByToken(final String token);
 
     String getJWT(final ClaimDetail claimDetail);

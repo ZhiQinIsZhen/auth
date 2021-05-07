@@ -103,6 +103,7 @@ public class JwtAccessTokenParser {
             claimDetail.setUsername(claims.getSubject());
             claimDetail.setUserId(claims.get(CLAIM_USER_ID, Long.class));
             claimDetail.setDevice(claims.get(CLAIM_DEVICE, Integer.class));
+            claimDetail.setAudience(claims.getAudience());
             claimDetail.setCreation(claims.getIssuedAt());
             claimDetail.setExpiration(claims.getExpiration());
         }
@@ -145,7 +146,8 @@ public class JwtAccessTokenParser {
     public String generateToken(final ClaimDetail claimDetail) {
         Claims claims = Jwts.claims()
                 .setSubject(claimDetail.getUsername())
-                .setIssuedAt(claimDetail.getCreation());
+                .setIssuedAt(claimDetail.getCreation())
+                .setAudience(claimDetail.getAudience());
         claims.put(CLAIM_DEVICE, claimDetail.getDevice());
         claims.put(CLAIM_USER_ID, claimDetail.getUserId());
         return generateToken(claims);

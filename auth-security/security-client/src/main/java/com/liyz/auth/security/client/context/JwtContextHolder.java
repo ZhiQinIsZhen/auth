@@ -2,6 +2,7 @@ package com.liyz.auth.security.client.context;
 
 import com.liyz.auth.common.base.constant.CommonConstant;
 import com.liyz.auth.common.base.util.HttpRequestUtil;
+import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;
 import com.liyz.auth.security.base.remote.RemoteJwtAuthService;
 import com.liyz.auth.security.base.user.AuthUserDetails;
@@ -29,16 +30,18 @@ import java.util.Date;
 public class JwtContextHolder implements ApplicationContextAware, InitializingBean {
 
     private static ApplicationContext applicationContext;
+    private static RemoteJwtAuthService remoteJwtAuthService;
+    private static RemoteGrantedAuthorityService remoteGrantedAuthorityService;
 
     public static RemoteJwtAuthService getJwtAuthService() {
-        return applicationContext.getBean("remoteJwtAuthService", RemoteJwtAuthService.class);
+        return remoteJwtAuthService;
     }
 
     public static RemoteGrantedAuthorityService getGrantedAuthorityService() {
-        return applicationContext.getBean("remoteGrantedAuthorityService", RemoteGrantedAuthorityService.class);
+        return remoteGrantedAuthorityService;
     }
 
-    public static String getJWT(Date lastLoginTime) {
+    public static String getJWT(Date lastLoginTime, SecurityEnum.AudienceType audienceType) {
         HttpServletRequest httpServletRequest = HttpRequestUtil.getRequest();
         LiteDeviceResolver resolver = new LiteDeviceResolver();
         Device device = resolver.resolveDevice(httpServletRequest);
@@ -48,6 +51,7 @@ public class JwtContextHolder implements ApplicationContextAware, InitializingBe
         claimDetail.setUsername(authUserDetails.getLoginName());
         claimDetail.setUserId(authUserDetails.getId());
         claimDetail.setCreation(lastLoginTime);
+        claimDetail.setAudience(audienceType.getCode());
         return getJwtAuthService().getJWT(claimDetail);
     }
 
@@ -55,9 +59,6 @@ public class JwtContextHolder implements ApplicationContextAware, InitializingBe
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
-
-    private static RemoteJwtAuthService remoteJwtAuthService;
-    private static RemoteGrantedAuthorityService remoteGrantedAuthorityService;
 
     @Override
     public void afterPropertiesSet() throws Exception {

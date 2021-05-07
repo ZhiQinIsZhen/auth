@@ -1,7 +1,10 @@
 package com.liyz.auth.security.server.impl;
 
+import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;
 import com.liyz.auth.security.base.user.GrantedAuthority;
+import com.liyz.auth.security.remote.bo.GrantedAuthorityBO;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import java.util.List;
@@ -16,8 +19,12 @@ import java.util.List;
 @DubboService(version = "1.0.0")
 public class RemoteGrantedAuthorityServiceImpl implements RemoteGrantedAuthorityService {
 
+    @DubboReference(version = "1.0.0", timeout = 5000, group = "staff")
+    com.liyz.auth.security.remote.RemoteGrantedAuthorityService staffGrantedAuthorityService;
+
     @Override
     public List<GrantedAuthority> getByRoleId(Integer roleId) {
-        return null;
+        List<GrantedAuthorityBO> boList = staffGrantedAuthorityService.getByRoleId(roleId);
+        return CommonCloneUtil.ListClone(boList, GrantedAuthority.class);
     }
 }

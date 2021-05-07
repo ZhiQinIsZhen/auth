@@ -3,6 +3,7 @@ package com.liyz.auth.security.server.impl;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.auth.common.remote.exception.RemoteServiceException;
+import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.remote.RemoteJwtAuthService;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
@@ -29,8 +30,10 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
     @Value("${jwt.tokenHeader.head:Bearer }")
     private String tokenHeaderHead;
 
-    @DubboReference(version = "1.0.0", timeout = 5000)
+    @DubboReference(version = "1.0.0", timeout = 5000, group = "member")
     RemoteLoadByUsernameService remoteLoadByUsernameService;
+    @DubboReference(version = "1.0.0", timeout = 5000, group = "staff")
+    RemoteLoadByUsernameService staffUsernameService;
 
     @Autowired
     JwtAccessTokenParser jwtAccessTokenParser;
@@ -54,6 +57,24 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
     }
 
     @Override
+    public AuthUser loginByStaff(String username) {
+        if (StringUtils.isBlank(username)) {
+            return null;
+        }
+        AuthUserBO authUserBO = staffUsernameService.login(username);
+        return CommonCloneUtil.objectClone(authUserBO, AuthUser.class);
+    }
+
+    @Override
+    public AuthUser loadUserByUsernameByStaff(String username) {
+        if (StringUtils.isBlank(username)) {
+            return null;
+        }
+        AuthUserBO authUserBO = staffUsernameService.loadByUsername(username);
+        return CommonCloneUtil.objectClone(authUserBO, AuthUser.class);
+    }
+
+    @Override
     public AuthUser loadUserByToken(final String token) {
         if (StringUtils.isNotBlank(token)) {
             if (token.startsWith(tokenHeaderHead)) {
@@ -61,8 +82,13 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
                 if (jwtAccessTokenParser.isTokenExpired(authToken)) {
                     throw new RemoteServiceException(CommonExceptionCodeEnum.AuthorizationTimeOut);
                 }
-                final String username = jwtAccessTokenParser.getUsernameByToken(authToken);
-                AuthUser authUser = loadUserByUsername(username);
+                ClaimDetail claimDetail = jwtAccessTokenParser.getDetailByToken(authToken);
+                AuthUser authUser = null;
+                if (SecurityEnum.AudienceType.Member.getCode().equals(claimDetail.getAudience())) {
+                    authUser = loadUserByUsername(claimDetail.getUsername());
+                } else {
+                    authUser = loadUserByUsernameByStaff(claimDetail.getUsername());
+                }
                 if (jwtAccessTokenParser.getCreationByToken(authToken).compareTo(authUser.getWebTokenTime()) != 0) {
                     throw new RemoteServiceException(CommonExceptionCodeEnum.OthersLogin);
                 }

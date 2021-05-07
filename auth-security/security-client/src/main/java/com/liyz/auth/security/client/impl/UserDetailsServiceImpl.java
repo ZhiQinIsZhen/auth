@@ -1,6 +1,7 @@
 package com.liyz.auth.security.client.impl;
 
 import com.google.common.collect.Lists;
+import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.base.user.GrantedAuthority;
@@ -35,6 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Value("${jwt.user.authority:false}")
     private boolean authority;
+    @Value("${jwt.audience.type:member}")
+    private String audienceType;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -53,12 +56,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return
      */
     private AuthUser getUserByUsername(String username) {
-        AuthUser authUser = JwtContextHolder.getJwtAuthService().login(username);
+        AuthUser authUser = null;
+        if (SecurityEnum.AudienceType.Member.getCode().equals(audienceType)) {
+            authUser = JwtContextHolder.getJwtAuthService().login(username);
+        } else if (SecurityEnum.AudienceType.Staff.getCode().equals(audienceType)) {
+            authUser = JwtContextHolder.getJwtAuthService().loginByStaff(username);
+        }
         if (Objects.isNull(authUser)) {
             throw new UsernameNotFoundException("No user found with token !");
         }
         if (authority) {
-            List<GrantedAuthority> boList = JwtContextHolder.getGrantedAuthorityService().getByRoleId(authUser.getRoleId());
+            List<GrantedAuthority> boList = null;
+            if (SecurityEnum.AudienceType.Member.getCode().equals(audienceType)) {
+                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleId(authUser.getRoleId());
+            } else if (SecurityEnum.AudienceType.Staff.getCode().equals(audienceType)) {
+                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleId(authUser.getRoleId());
+            }
             List<AuthGrantedAuthority> authorityList = new ArrayList<>(boList.size());
             boList.stream().forEach(grantedAuthorityBO -> {
                 authorityList.add(new AuthGrantedAuthority(grantedAuthorityBO.getPermissionUrl(), grantedAuthorityBO.getMethod()));

@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * @date 2021/4/13 14:58
  */
 @Slf4j
-@DubboService(version = "1.0.0")
+@DubboService(version = "1.0.0", group = "member")
 public class RemoteLoadByUsernameServiceImpl implements RemoteLoadByUsernameService {
 
     @Resource

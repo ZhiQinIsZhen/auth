@@ -11,10 +11,12 @@
 
     <modules>
         <module>auth-dependencies-bom</module>
+        <module>api-open</module>
         <module>api-web</module>
         <module>auth-security</module>
         <module>auth-common</module>
         <module>service-member</module>
+        <module>service-staff</module>
     </modules>
 
     <properties>

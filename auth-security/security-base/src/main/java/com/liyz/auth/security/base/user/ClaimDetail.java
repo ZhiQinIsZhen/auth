@@ -24,6 +24,8 @@ public class ClaimDetail implements Serializable {
 
     private Integer device;
 
+    private String audience;
+
     private Date creation;
 
     private Date expiration;

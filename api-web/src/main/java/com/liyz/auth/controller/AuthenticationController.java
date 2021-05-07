@@ -6,6 +6,7 @@ import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.common.limit.enums.LimitType;
 import com.liyz.auth.dto.LoginDTO;
 import com.liyz.auth.security.base.annotation.Anonymous;
+import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.client.context.JwtContextHolder;
 import com.liyz.auth.vo.LoginVO;
@@ -64,7 +65,7 @@ public class AuthenticationController {
                 .nickName(authUserDetails.getNikeName())
                 .email(authUserDetails.getEmail())
                 .mobile(authUserDetails.getMobile())
-                .token(JwtContextHolder.getJWT(authUserDetails.getLastWebPasswordResetDate()))
+                .token(JwtContextHolder.getJWT(authUserDetails.getLastWebPasswordResetDate(), SecurityEnum.AudienceType.Member))
                 .build();
         return Result.success(loginVO);
     }
