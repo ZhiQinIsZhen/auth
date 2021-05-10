@@ -17,6 +17,7 @@
         <module>auth-common</module>
         <module>service-member</module>
         <module>service-staff</module>
+        <module>service-order</module>
     </modules>
 
     <properties>
