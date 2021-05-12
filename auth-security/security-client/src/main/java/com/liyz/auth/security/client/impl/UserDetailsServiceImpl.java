@@ -34,9 +34,9 @@ import java.util.Objects;
 @ConditionalOnBean(value = {AuthenticationManager.class})
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Value("${jwt.user.authority:false}")
+    @Value("${jwt.user.authority}")
     private boolean authority;
-    @Value("${jwt.audience.type:member}")
+    @Value("${jwt.audience.type}")
     private String audienceType;
 
     @Override

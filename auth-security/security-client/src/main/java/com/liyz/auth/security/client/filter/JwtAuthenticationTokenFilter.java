@@ -66,6 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (RemoteServiceException exception) {
+            log.error("auth token fail, cause by ==> code : {}, msg : {}", exception.getCode(), exception.getMessage());
             httpServletResponse.setCharacterEncoding(String.valueOf(Charsets.UTF_8));
             httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             httpServletResponse.getWriter().println(JsonMapperUtil.toJSONString(Result.error(exception.getCode(),

@@ -4,11 +4,13 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.auth.common.remote.exception.RemoteServiceException;
 import com.liyz.auth.security.base.constant.SecurityEnum;
+import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;
 import com.liyz.auth.security.base.remote.RemoteJwtAuthService;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import com.liyz.auth.security.remote.RemoteLoadByUsernameService;
 import com.liyz.auth.security.remote.bo.AuthUserBO;
+import com.liyz.auth.security.remote.bo.GrantedAuthorityBO;
 import com.liyz.auth.security.server.parse.JwtAccessTokenParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;
@@ -16,6 +18,8 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Objects;
 
 /**
  * 注释:
@@ -30,6 +34,8 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
     @Value("${jwt.tokenHeader.head:Bearer }")
     private String tokenHeaderHead;
 
+    @DubboReference(version = "1.0.0", timeout = 5000)
+    RemoteGrantedAuthorityService remoteGrantedAuthorityService;
     @DubboReference(version = "1.0.0", timeout = 5000, group = "member")
     RemoteLoadByUsernameService remoteLoadByUsernameService;
     @DubboReference(version = "1.0.0", timeout = 5000, group = "staff")
@@ -71,7 +77,11 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
             return null;
         }
         AuthUserBO authUserBO = staffUsernameService.loadByUsername(username);
-        return CommonCloneUtil.objectClone(authUserBO, AuthUser.class);
+        AuthUser authUser = CommonCloneUtil.objectClone(authUserBO, AuthUser.class);
+        if (Objects.nonNull(authUser) && Objects.nonNull(authUser.getRoleId())) {
+            authUser.setAuthorityList(remoteGrantedAuthorityService.getByRoleId(authUserBO.getRoleId()));
+        }
+        return authUser;
     }
 
     @Override
