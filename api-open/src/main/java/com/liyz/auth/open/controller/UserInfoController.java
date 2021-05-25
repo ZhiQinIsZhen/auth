@@ -37,7 +37,8 @@ public class UserInfoController {
     @Limits(value = {@Limit(count = 1)})
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
-    @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
+    @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息111,222222222,444444444444")
+
     @GetMapping("/info")
     public Result<UserInfoVO> info() {
         return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));

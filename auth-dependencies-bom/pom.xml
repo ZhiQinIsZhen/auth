@@ -24,7 +24,7 @@
         <spring.kafka.version>2.5.1.RELEASE</spring.kafka.version>
         <seata.version>1.4.1</seata.version>
         <elasticjob.version>3.0.0-RC1</elasticjob.version>
-        <revision>1.0.0</revision>
+        <revision>1.0.0-SNAPSHOT</revision>
     </properties>
 
     <dependencyManagement>

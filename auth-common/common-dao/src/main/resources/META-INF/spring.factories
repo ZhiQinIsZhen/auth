@@ -1,4 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.liyz.auth.common.dao.handler.MybatisPlusMetaObjectHandler,\
-com.liyz.auth.common.dao.config.MybatisPlusAutoConfig
+com.liyz.auth.common.dao.config.MybatisPlusAutoConfig,\
+com.liyz.auth.common.dao.config.MapperResultInterceptor,\
+com.liyz.auth.common.dao.config.MapperParameterInterceptor
