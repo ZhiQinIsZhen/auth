@@ -5,6 +5,7 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.open.vo.UserInfoVO;
+import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.security.client.AuthContext;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +38,13 @@ public class UserInfoController {
     @Limits(value = {@Limit(count = 1)})
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
-    @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息111,222222222,444444444444")
-
+    @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
     @GetMapping("/info")
     public Result<UserInfoVO> info() {
         return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));
     }
 
+    @NonAuthority
     @Limits(value = {@Limit(count = 1)})
     @ApiOperation(value = "获取登陆的用户ID", notes = "获取登陆的用户ID")
     @GetMapping("/id")
