@@ -1,17 +1,16 @@
 package com.liyz.auth.common.controller.error;
 
 import com.liyz.auth.common.base.result.Result;
-import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 /**
  * 注释:
@@ -30,25 +29,19 @@ import java.util.Objects;
 })
 @Slf4j
 @RestController
-@RequestMapping("/error")
-public class ErrorApiController implements ErrorController {
+@RequestMapping("/liyz")
+public class ErrorApiController extends BasicErrorController {
 
-    @Override
-    public String getErrorPath() {
-        return "/error";
+    public ErrorApiController(ServerProperties serverProperties) {
+        super(new DefaultErrorAttributes(), serverProperties.getError());
     }
-
 
     @ApiOperation(value = "错误重定向", notes = "错误重定向")
     @ApiImplicitParam(name = "Authorization", value = "认证Token", required = false, paramType = "header",
             dataType = "string")
-    @RequestMapping
-    public Result error(HttpServletRequest request, HttpServletResponse response) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        HttpStatus status = HttpStatus.valueOf(statusCode);
-        String reason = status.getReasonPhrase();
-        String msg = Objects.isNull(status) ? CommonExceptionCodeEnum.UnknownException.getMessage() : reason;
-        return Result.error(String.valueOf(statusCode), msg);
+    @RequestMapping("/error")
+    public Result myError(HttpServletRequest request) {
+        HttpStatus status = this.getStatus(request);
+        return Result.error(String.valueOf(status.value()), status.getReasonPhrase());
     }
-
 }
