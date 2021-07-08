@@ -1,5 +1,6 @@
 package com.liyz.auth.service.member.provider;
 
+import com.liyz.auth.common.base.trace.annotation.Logs;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.auth.common.remote.exception.RemoteServiceException;
@@ -22,12 +23,13 @@ import javax.annotation.Resource;
  * @date 2021/4/13 14:58
  */
 @Slf4j
-@DubboService(version = "1.0.0", group = "member")
+@DubboService(group = "member")
 public class RemoteLoadByUsernameServiceImpl implements RemoteLoadByUsernameService {
 
     @Resource
     private IUserInfoService userInfoService;
 
+    @Logs
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AuthUserBO login(String username) {
@@ -43,6 +45,7 @@ public class RemoteLoadByUsernameServiceImpl implements RemoteLoadByUsernameServ
         return CommonCloneUtil.objectClone(infoDO, AuthUserBO.class);
     }
 
+    @Logs
     @Override
     public AuthUserBO loadByUsername(String username) {
         if (StringUtils.isBlank(username)) {

@@ -1,5 +1,6 @@
 package com.liyz.auth.service.member.provider;
 
+import com.liyz.auth.common.base.trace.annotation.Logs;
 import com.liyz.auth.service.member.bo.UserInfoBO;
 import com.liyz.auth.service.member.bo.UserRegisterBO;
 import com.liyz.auth.service.member.constant.MemberEnum;
@@ -20,22 +21,25 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2021/4/13 13:56
  */
-@DubboService(version = "1.0.0")
+@DubboService
 public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
 
     @Resource
     private IUserInfoService userInfoService;
 
+    @Logs
     @Override
     public UserInfoBO register(UserRegisterBO userRegisterBO) {
         return null;
     }
 
+    @Logs
     @Override
     public UserInfoBO getByUserId(Long userId) {
         return CommonCloneUtil.objectClone(userInfoService.getByUserId(userId), UserInfoBO.class);
     }
 
+    @Logs
     @Override
     public Page<UserInfoBO> pageList(Integer page, Integer size) {
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserInfoDO> doPage = userInfoService.page(page, size);
@@ -44,6 +48,7 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
         return CommonCloneUtil.pageClone(userInfoDOPage, UserInfoBO.class);
     }
 
+    @Logs
     @Override
     public UserInfoBO getByCondition(UserInfoBO userInfoBO) {
         return CommonCloneUtil.objectClone(
@@ -51,11 +56,13 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
         );
     }
 
+    @Logs
     @Override
     public Date loginTime(Long userId, String ip, MemberEnum.DeviceEnum deviceEnum) {
         return null;
     }
 
+    @Logs
     @Override
     public Date kickDownLine(Long userId, MemberEnum.DeviceEnum deviceEnum) {
         return null;

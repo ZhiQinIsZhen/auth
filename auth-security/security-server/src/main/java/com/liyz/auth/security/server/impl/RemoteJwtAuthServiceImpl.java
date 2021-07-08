@@ -28,17 +28,17 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2021/4/13 10:12
  */
-@DubboService(version = "1.0.0")
+@DubboService
 public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
 
     @Value("${jwt.tokenHeader.head:Bearer }")
     private String tokenHeaderHead;
 
-    @DubboReference(version = "1.0.0", timeout = 5000)
+    @DubboReference(timeout = 5000)
     RemoteGrantedAuthorityService remoteGrantedAuthorityService;
-    @DubboReference(version = "1.0.0", timeout = 5000, group = "member")
+    @DubboReference(timeout = 5000, group = "member")
     RemoteLoadByUsernameService remoteLoadByUsernameService;
-    @DubboReference(version = "1.0.0", timeout = 5000, group = "staff")
+    @DubboReference(timeout = 5000, group = "staff")
     RemoteLoadByUsernameService staffUsernameService;
 
     @Autowired

@@ -25,7 +25,7 @@ import java.util.Objects;
  * @date 2021/5/7 11:27
  */
 @Slf4j
-@DubboService(version = "1.0.0", group = "staff")
+@DubboService(group = "staff")
 public class RemoteLoadByUsernameServiceImpl implements RemoteLoadByUsernameService {
 
     @Resource

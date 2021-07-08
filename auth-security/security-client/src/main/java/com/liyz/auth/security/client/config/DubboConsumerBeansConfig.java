@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DubboConsumerBeansConfig {
 
-    @DubboReference(version = "1.0.0", timeout = 100000)
+    @DubboReference(timeout = 100000)
     private RemoteJwtAuthService remoteJwtAuthService;
-    @DubboReference(version = "1.0.0", timeout = 10000)
+    @DubboReference(timeout = 10000)
     private RemoteGrantedAuthorityService remoteGrantedAuthorityService;
 
     @Bean

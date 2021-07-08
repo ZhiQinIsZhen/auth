@@ -19,7 +19,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2021/5/7 11:21
  */
-@DubboService(version = "1.0.0", group = "staff")
+@DubboService(group = "staff")
 public class RemoteRolePermissionImpl implements RemoteGrantedAuthorityService {
 
     @Resource

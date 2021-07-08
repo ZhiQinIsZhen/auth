@@ -16,10 +16,10 @@ import java.util.List;
  * @version 1.0.0
  * @date 2021/4/13 10:12
  */
-@DubboService(version = "1.0.0")
+@DubboService
 public class RemoteGrantedAuthorityServiceImpl implements RemoteGrantedAuthorityService {
 
-    @DubboReference(version = "1.0.0", timeout = 5000, group = "staff")
+    @DubboReference(timeout = 5000, group = "staff")
     com.liyz.auth.security.remote.RemoteGrantedAuthorityService staffGrantedAuthorityService;
 
     @Override

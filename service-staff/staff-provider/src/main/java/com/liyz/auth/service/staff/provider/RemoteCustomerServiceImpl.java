@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
  * @version 1.0.0
  * @date 2021/5/7 11:14
  */
-@DubboService(version = "1.0.0")
+@DubboService
 public class RemoteCustomerServiceImpl implements RemoteCustomerService {
 
     @Resource
