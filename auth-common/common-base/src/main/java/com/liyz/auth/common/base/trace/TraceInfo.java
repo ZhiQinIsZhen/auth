@@ -46,4 +46,19 @@ public class TraceInfo implements Serializable {
      * 持续时间
      */
     private Long duration;
+
+    /**
+     * 参数
+     */
+    private String params;
+
+    /**
+     * 结果
+     */
+    private String result;
+
+    /**
+     * 是否正常结束
+     */
+    private Boolean isNormal = Boolean.TRUE;
 }

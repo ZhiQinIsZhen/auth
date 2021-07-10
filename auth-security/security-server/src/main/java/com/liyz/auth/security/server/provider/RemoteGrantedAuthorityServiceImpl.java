@@ -1,4 +1,4 @@
-package com.liyz.auth.security.server.impl;
+package com.liyz.auth.security.server.provider;
 
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;

@@ -21,6 +21,8 @@ public interface CommonConstant {
 
     String REQUEST_ID = "request_id";
 
+    String PARENT_SPAN_ID = "parent_span_id";
+
     String DEFAULT_JOINER = ":";
 
     Integer DEVICE_WEB = 1;

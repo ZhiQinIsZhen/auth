@@ -3,10 +3,10 @@ package com.liyz.auth.common.base.trace;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.common.threadlocal.InternalThreadLocal;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 注释:
@@ -22,42 +22,49 @@ public final class TraceContext {
     private static final InternalThreadLocal<TraceInfo> LOCAL_TRACE = new InternalThreadLocal<>();
 
     /**
-     * 获取traceId
+     * 获取traceInfo
      *
      * @return
      */
-    public static String getTraceId() {
-        TraceInfo traceInfo = LOCAL_TRACE.get();
-        if (Objects.nonNull(traceInfo)) {
-            return traceInfo.getTraceId();
-        }
-        return StringUtils.EMPTY;
+    public static TraceInfo getTraceInfo() {
+        return LOCAL_TRACE.get();
     }
 
     /**
-     * 设置traceId
+     * 设置traceInfo
      *
-     * @param traceId
-     * @param method
+     * @param traceInfo
      */
-    public static void setTraceId(String traceId, String method) {
-        TraceInfo traceInfo = new TraceInfo();
-        traceInfo.setTraceId(traceId);
-        traceInfo.setMethod(method);
-        traceInfo.setTimestamp(System.currentTimeMillis());
+    public static void setTraceInfo(TraceInfo traceInfo) {
+        if (Objects.isNull(traceInfo.getTimestamp())) {
+            traceInfo.setTimestamp(System.currentTimeMillis());
+        }
         LOCAL_TRACE.set(traceInfo);
     }
 
     /**
-     * 移除traceId
+     * 移除traceInfo
      */
-    public static void removeTraceId() {
-        TraceInfo traceInfo = LOCAL_TRACE.get();
-        if (Objects.nonNull(traceInfo)) {
-            log.warn("traceId : {}, total request time : {} ms, method : {}",
-                    traceInfo.getTraceId(),
-                    System.currentTimeMillis() - traceInfo.getTimestamp(),
-                    traceInfo.getMethod());
-        }
+    public static void removeTraceInfo() {
+        LOCAL_TRACE.remove();
+    }
+
+    /**
+     * 生成一个新的链路id
+     *
+     * @return
+     */
+    public static String createTraceId() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 生成一个新的跨度id
+     * 注：由于生成规则和链路id一样，不方便区分，应用者可以和链路id一样，重新修改其生成规则
+     *
+     * @return
+     */
+    public static String createSpanId() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
