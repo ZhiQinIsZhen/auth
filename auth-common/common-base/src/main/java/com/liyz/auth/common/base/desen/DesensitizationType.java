@@ -13,6 +13,7 @@ public enum DesensitizationType {
     EMAIL,
     REAL_NAME,
     CARD_NO,
-    SELF_DEFINITION
+    SELF_DEFINITION,
+    IGNORE,
     ;
 }

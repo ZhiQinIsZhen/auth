@@ -38,6 +38,7 @@ public class DesensitizeStrategy {
                     map.put(DesensitizationType.REAL_NAME, new DesensitizeName());
                     map.put(DesensitizationType.CARD_NO, new DesensitizeCardNo());
                     map.put(DesensitizationType.SELF_DEFINITION, new DesensitizeSelfDefinition());
+                    map.put(DesensitizationType.IGNORE, new DesensitizeIgnore());
                 }
             }
         }

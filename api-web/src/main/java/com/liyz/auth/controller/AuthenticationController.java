@@ -1,7 +1,6 @@
 package com.liyz.auth.controller;
 
 import com.liyz.auth.common.base.result.Result;
-import com.liyz.auth.common.base.trace.annotation.LogIgnore;
 import com.liyz.auth.common.base.trace.annotation.Logs;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
@@ -57,7 +56,7 @@ public class AuthenticationController {
     @Anonymous
     @ApiOperation(value = "登陆", notes = "登陆")
     @PostMapping("/login")
-    public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody @LogIgnore LoginDTO loginDTO) {
+    public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody LoginDTO loginDTO) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginDTO.getLoginName(), loginDTO.getLoginPwd());
         SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
         AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

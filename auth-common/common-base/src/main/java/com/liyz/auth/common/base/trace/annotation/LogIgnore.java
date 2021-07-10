@@ -1,5 +1,9 @@
 package com.liyz.auth.common.base.trace.annotation;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.liyz.auth.common.base.filter.jackson.JacksonIgnoreContextValueFilter;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,6 +16,8 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.PARAMETER})
+@Target({ElementType.PARAMETER, ElementType.FIELD, ElementType.TYPE})
+@JsonSerialize(using = JacksonIgnoreContextValueFilter.class)
+@JacksonAnnotationsInside
 public @interface LogIgnore {
 }
