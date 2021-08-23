@@ -10,20 +10,20 @@
     <packaging>pom</packaging>
 
     <properties>
-        <springboot_parent_version>2.5.2</springboot_parent_version>
+        <springboot_parent_version>2.5.4</springboot_parent_version>
         <guava.version>30.1-jre</guava.version>
         <cglib.version>3.3.0</cglib.version>
         <device.version>1.1.5.RELEASE</device.version>
         <jjwt.version>0.9.1</jjwt.version>
         <spring-jwt.version>1.1.1.RELEASE</spring-jwt.version>
-        <dubbo.version>3.0.1</dubbo.version>
+        <dubbo.version>3.0.2</dubbo.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
         <knife4j.version>2.0.8</knife4j.version>
         <redisson.version>3.15.0</redisson.version>
         <spring.kafka.version>2.5.1.RELEASE</spring.kafka.version>
         <seata.version>1.4.1</seata.version>
-        <elasticjob.version>3.0.0-RC1</elasticjob.version>
+        <elasticjob.version>3.0.0</elasticjob.version>
         <revision>1.0.0-SNAPSHOT</revision>
     </properties>
 
@@ -144,6 +144,11 @@
                 <version>${seata.version}</version>
             </dependency>
             <!-- job -->
+            <dependency>
+                <groupId>org.apache.shardingsphere.elasticjob</groupId>
+                <artifactId>elasticjob-lite-spring-boot-starter</artifactId>
+                <version>${elasticjob.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere.elasticjob</groupId>
                 <artifactId>elasticjob-lite-core</artifactId>

@@ -17,8 +17,27 @@
     <dependencies>
         <dependency>
             <groupId>com.liyz.auth</groupId>
+            <artifactId>common-remote</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>common-base</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>common-util</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
             <artifactId>security-base</artifactId>
             <version>${revision}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -29,18 +48,9 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.liyz.auth</groupId>
-            <artifactId>common-base</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.liyz.auth</groupId>
-            <artifactId>common-util</artifactId>
-            <version>${revision}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-common</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

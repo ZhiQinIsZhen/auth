@@ -17,8 +17,15 @@
     <dependencies>
         <dependency>
             <groupId>com.liyz.auth</groupId>
+            <artifactId>common-remote</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

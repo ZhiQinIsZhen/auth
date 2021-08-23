@@ -17,8 +17,20 @@
     <dependencies>
         <dependency>
             <groupId>com.liyz.auth</groupId>
+            <artifactId>common-remote</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-rpc-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

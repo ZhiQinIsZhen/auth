@@ -10,7 +10,6 @@ import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import com.liyz.auth.security.remote.RemoteLoadByUsernameService;
 import com.liyz.auth.security.remote.bo.AuthUserBO;
-import com.liyz.auth.security.remote.bo.GrantedAuthorityBO;
 import com.liyz.auth.security.server.parse.JwtAccessTokenParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboReference;

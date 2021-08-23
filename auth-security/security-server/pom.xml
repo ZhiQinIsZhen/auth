@@ -17,6 +17,11 @@
     <dependencies>
         <dependency>
             <groupId>com.liyz.auth</groupId>
+            <artifactId>common-remote</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
             <artifactId>common-base</artifactId>
             <version>${revision}</version>
         </dependency>

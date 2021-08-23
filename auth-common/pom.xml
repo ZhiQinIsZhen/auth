@@ -21,5 +21,6 @@
         <module>common-dao</module>
         <module>common-controller</module>
         <module>common-limit</module>
+        <module>common-job</module>
     </modules>
 </project>

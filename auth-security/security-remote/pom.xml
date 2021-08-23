@@ -19,6 +19,7 @@
             <groupId>com.liyz.auth</groupId>
             <artifactId>common-remote</artifactId>
             <version>${revision}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
