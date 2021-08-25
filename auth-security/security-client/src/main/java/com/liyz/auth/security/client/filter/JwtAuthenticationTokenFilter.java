@@ -9,6 +9,7 @@ import com.liyz.auth.security.base.user.AuthUserDetails;
 import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.security.client.context.JwtContextHolder;
 import com.liyz.auth.security.client.impl.UserDetailsServiceImpl;
+import com.liyz.auth.security.client.util.AnonymousUrlsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         try {
             //处理request head信息
             String token = httpServletRequest.getHeader(this.tokenHeaderKey);
-            if (StringUtils.isNotBlank(token)) {
+            if (StringUtils.isNotBlank(token) && !AnonymousUrlsUtil.anonymousUrls().contains(httpServletRequest.getServletPath())) {
                 token = URLDecoder.decode(token, String.valueOf(Charsets.UTF_8));
                 final AuthUser authUser = JwtContextHolder.getJwtAuthService().loadUserByToken(token);
                 if (Objects.nonNull(authUser)) {

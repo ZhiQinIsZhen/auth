@@ -47,7 +47,7 @@ public class LoginVO implements Serializable {
     private String email;
 
     @ApiModelProperty(value = "鉴权token", example = "eyJhbGcUzUxMiJ9.eyJzdWIiOiIUVySWQiOjF9.7-Mwz-1j7fbaPLGpQ")
-    private String token;
+    private String accessToken;
 
     @ApiModelProperty(value = "Token失效时间戳(ms)", example = "193219768968")
     private Long expirationDate;
