@@ -1,4 +1,4 @@
-package com.liyz.auth.open.vo;
+package com.liyz.auth.open.vo.auth;
 
 import com.liyz.auth.common.base.desen.Desensitization;
 import com.liyz.auth.common.base.desen.DesensitizationType;

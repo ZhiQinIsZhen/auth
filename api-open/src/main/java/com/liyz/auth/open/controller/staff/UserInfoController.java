@@ -4,7 +4,7 @@ import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
-import com.liyz.auth.open.vo.UserInfoVO;
+import com.liyz.auth.open.vo.staff.UserInfoVO;
 import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.security.client.AuthContext;
 import io.swagger.annotations.*;

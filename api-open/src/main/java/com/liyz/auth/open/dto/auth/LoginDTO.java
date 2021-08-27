@@ -1,4 +1,4 @@
-package com.liyz.auth.open.dto;
+package com.liyz.auth.open.dto.auth;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

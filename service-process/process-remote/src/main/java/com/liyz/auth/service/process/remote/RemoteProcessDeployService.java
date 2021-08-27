@@ -1,6 +1,10 @@
 package com.liyz.auth.service.process.remote;
 
+import com.liyz.auth.common.remote.page.Page;
+import com.liyz.auth.service.process.bo.ProcessDefinitionBO;
 import com.liyz.auth.service.process.bo.ProcessDeployBO;
+
+import java.util.List;
 
 /**
  * 注释:
@@ -18,4 +22,18 @@ public interface RemoteProcessDeployService {
      * @return
      */
     Boolean deploy(ProcessDeployBO processDeployBO);
+
+    /**
+     * 查询列表
+     */
+    List<ProcessDefinitionBO> deployList();
+
+    /**
+     * 分页查询
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    Page<ProcessDefinitionBO> deployPage(Integer page, Integer size);
 }
