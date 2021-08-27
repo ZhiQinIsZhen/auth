@@ -1,6 +1,6 @@
 package com.liyz.auth.service.process.config;
 
-import com.liyz.auth.service.process.service.TypedEventListener;
+import com.liyz.auth.service.process.listener.TypedEventListener;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;

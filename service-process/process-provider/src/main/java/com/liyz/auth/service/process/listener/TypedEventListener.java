@@ -1,4 +1,4 @@
-package com.liyz.auth.service.process.service;
+package com.liyz.auth.service.process.listener;
 
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 import org.activiti.engine.delegate.event.ActivitiEventType;
