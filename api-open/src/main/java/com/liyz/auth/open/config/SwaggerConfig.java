@@ -37,10 +37,36 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .apiInfo(apiInfo())
                 .protocols(Sets.newHashSet("https", "http"))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liyz.auth.open.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.auth.open.controller.auth"))
                 .paths(PathSelectors.any())
                 .build()
                 .extensions(openApiExtensionResolver.buildSettingExtensions())
                 .groupName("鉴权认证-API");
+    }
+
+    @Bean
+    public Docket createStaffApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.auth.open.controller.staff"))
+                .paths(PathSelectors.any())
+                .build()
+                .extensions(openApiExtensionResolver.buildSettingExtensions())
+                .groupName("员工-API");
+    }
+
+    @Bean
+    public Docket createProcessApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.auth.open.controller.process"))
+                .paths(PathSelectors.any())
+                .build()
+                .extensions(openApiExtensionResolver.buildSettingExtensions())
+                .groupName("流程-API");
     }
 }

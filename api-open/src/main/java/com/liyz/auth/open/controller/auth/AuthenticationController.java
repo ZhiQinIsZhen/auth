@@ -1,4 +1,4 @@
-package com.liyz.auth.open.controller;
+package com.liyz.auth.open.controller.auth;
 
 import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.limit.annotation.Limit;

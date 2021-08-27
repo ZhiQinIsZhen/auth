@@ -17,7 +17,17 @@
     <dependencies>
         <dependency>
             <groupId>com.liyz.auth</groupId>
+            <artifactId>common-remote</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
             <artifactId>common-base</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>security-base</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
@@ -33,6 +43,11 @@
         <dependency>
             <groupId>com.liyz.auth</groupId>
             <artifactId>common-limit</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>common-util</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>

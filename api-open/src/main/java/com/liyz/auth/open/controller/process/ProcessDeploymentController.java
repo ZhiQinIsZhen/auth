@@ -1,15 +1,13 @@
-package com.liyz.auth.open.controller;
+package com.liyz.auth.open.controller.process;
 
 import com.liyz.auth.common.base.result.Result;
-import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
-import com.liyz.auth.open.vo.UserInfoVO;
 import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.security.client.AuthContext;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,9 +18,9 @@ import java.util.Objects;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2020/1/6 14:31
+ * @date 2021/8/27 14:01
  */
-@Api(value = "用户信息", tags = "用户信息")
+@Api(value = "流程图", tags = "流程图")
 @ApiResponses(value = {
         @ApiResponse(code = 0, message = "成功"),
         @ApiResponse(code = 1, message = "失败"),
@@ -32,26 +30,17 @@ import java.util.Objects;
 })
 @Slf4j
 @RestController
-@RequestMapping("/user")
-public class UserInfoController {
-
-    @Limits(value = {@Limit(count = 1)})
-    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
-            paramType = "header")
-    @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
-    @GetMapping("/info")
-    public Result<UserInfoVO> info() {
-        return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));
-    }
+@RequestMapping("/process")
+public class ProcessDeploymentController {
 
     @NonAuthority
     @Limits(value = {@Limit(count = 1)})
-    @ApiOperation(value = "获取登陆的用户ID", notes = "获取登陆的用户ID")
-    @GetMapping("/id")
+    @ApiOperation(value = "流程图上传", notes = "流程图上传")
+    @PostMapping("/deploy")
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
-    public Result<Long> id() {
-        return Result.success(Objects.isNull(AuthContext.getAuthUser()) ? null : AuthContext.getAuthUser().getUserId());
-    }
+    public Result<Boolean> deploy() {
 
+        return Result.success(Boolean.TRUE);
+    }
 }
