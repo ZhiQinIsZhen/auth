@@ -440,3 +440,7 @@ CREATE TABLE `act_ru_variable` (
                                    CONSTRAINT `ACT_FK_VAR_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE NO ACTION ON UPDATE NO ACTION,
                                    CONSTRAINT `ACT_FK_VAR_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+
+INSERT INTO `activiti`.`act_ge_property`(`NAME_`, `VALUE_`, `REV_`) VALUES ('schema.history', 'create(5.20.0.1)', 1);
+INSERT INTO `activiti`.`act_ge_property`(`NAME_`, `VALUE_`, `REV_`) VALUES ('schema.version', '5.20.0.1', 1);

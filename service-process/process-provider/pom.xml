@@ -76,14 +76,8 @@
 
         <dependency>
             <groupId>org.activiti</groupId>
-            <artifactId>activiti-engine</artifactId>
+            <artifactId>activiti-spring</artifactId>
             <version>5.19.0.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mybatis</groupId>
-                    <artifactId>mybatis</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>

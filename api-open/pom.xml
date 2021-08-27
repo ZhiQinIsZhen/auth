@@ -84,5 +84,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>process-remote</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

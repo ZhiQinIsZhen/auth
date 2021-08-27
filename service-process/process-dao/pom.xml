@@ -16,6 +16,17 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>5.19.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>com.liyz.auth</groupId>
             <artifactId>common-dao</artifactId>
             <version>${revision}</version>

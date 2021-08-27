@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.liyz.auth.service.process.dao.RunTaskMapper">
+<!--    &lt;!&ndash; TASK RESULTMAP &ndash;&gt;-->
+<!--    <resultMap id="taskResultMap" type="org.activiti.engine.impl.persistence.entity.TaskEntity">-->
+<!--        <id property="id" column="ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="revision" column="REV_" jdbcType="INTEGER"/>-->
+<!--&lt;!&ndash;        <result property="nameWithoutCascade" column="NAME_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="parentTaskIdWithoutCascade" column="PARENT_TASK_ID_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="descriptionWithoutCascade" column="DESCRIPTION_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="priorityWithoutCascade" column="PRIORITY_" jdbcType="INTEGER"/>&ndash;&gt;-->
+<!--        <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>-->
+<!--&lt;!&ndash;        <result property="ownerWithoutCascade" column="OWNER_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="assigneeWithoutCascade" column="ASSIGNEE_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="delegationStateString" column="DELEGATION_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--        <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR"/>-->
+<!--&lt;!&ndash;        <result property="taskDefinitionKeyWithoutCascade" column="TASK_DEF_KEY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="dueDateWithoutCascade" column="DUE_DATE_" jdbcType="TIMESTAMP"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="categoryWithoutCascade" column="CATEGORY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--        <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER"/>-->
+<!--        <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR"/>-->
+<!--&lt;!&ndash;        <result property="formKeyWithoutCascade" column="FORM_KEY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="taskAndVariablesResultMap" type="org.activiti.engine.impl.persistence.entity.TaskEntity">-->
+<!--        <id property="id" column="ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="revision" column="REV_" jdbcType="INTEGER"/>-->
+<!--&lt;!&ndash;        <result property="nameWithoutCascade" column="NAME_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="parentTaskIdWithoutCascade" column="PARENT_TASK_ID_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="descriptionWithoutCascade" column="DESCRIPTION_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="priorityWithoutCascade" column="PRIORITY_" jdbcType="INTEGER"/>&ndash;&gt;-->
+<!--        <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP"/>-->
+<!--&lt;!&ndash;        <result property="ownerWithoutCascade" column="OWNER_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="assigneeWithoutCascade" column="ASSIGNEE_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="delegationStateString" column="DELEGATION_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--        <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR"/>-->
+<!--        <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR"/>-->
+<!--&lt;!&ndash;        <result property="taskDefinitionKeyWithoutCascade" column="TASK_DEF_KEY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="dueDateWithoutCascade" column="DUE_DATE_" jdbcType="TIMESTAMP"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="categoryWithoutCascade" column="CATEGORY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--        <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER"/>-->
+<!--        <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR"/>-->
+<!--&lt;!&ndash;        <result property="formKeyWithoutCascade" column="FORM_KEY_" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--        <collection property="queryVariables" column="TASK_ID_" javaType="ArrayList"-->
+<!--                    ofType="org.activiti.engine.impl.persistence.entity.VariableInstanceEntity">-->
+<!--            <id property="id" column="VAR_ID_"/>-->
+<!--            <result property="name" column="VAR_NAME_" javaType="String" jdbcType="VARCHAR"/>-->
+<!--            <result property="type" column="VAR_TYPE_" javaType="org.activiti.engine.impl.variable.VariableType"-->
+<!--                    jdbcType="VARCHAR"/>-->
+<!--            <result property="revision" column="VAR_REV_" jdbcType="INTEGER"/>-->
+<!--            <result property="processInstanceId" column="VAR_PROC_INST_ID_" jdbcType="VARCHAR"/>-->
+<!--            <result property="executionId" column="VAR_EXECUTION_ID_" jdbcType="VARCHAR"/>-->
+<!--            <result property="taskId" column="VAR_TASK_ID_" jdbcType="VARCHAR"/>-->
+<!--            <result property="byteArrayRef" column="VAR_BYTEARRAY_ID_" typeHandler="ByteArrayRefTypeHandler"/>-->
+<!--            <result property="doubleValue" column="VAR_DOUBLE_" jdbcType="DOUBLE"/>-->
+<!--            <result property="textValue" column="VAR_TEXT_" jdbcType="VARCHAR"/>-->
+<!--            <result property="textValue2" column="VAR_TEXT2_" jdbcType="VARCHAR"/>-->
+<!--            <result property="longValue" column="VAR_LONG_" jdbcType="BIGINT"/>-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+
+<!--    <select id="selectTaskByQueryCriteriaLocal" parameterType="com.liyz.auth.service.process.model.LocalTaskQuery"-->
+<!--            resultMap="taskResultMap">-->
+<!--        ${limitBefore}-->
+<!--        select distinct RES.*-->
+<!--        from ${prefix}ACT_RU_TASK RES-->
+<!--        ${limitBetween}-->
+<!--        <include refid="selectCriteriaSqlLocal"/>-->
+
+<!--        order by RES.create_time_ desc-->
+<!--        ${limitAfter}-->
+<!--    </select>-->
+
+<!--    <select id="selectTaskByQueryCriteriaLocalCount" parameterType="com.liyz.auth.service.process.model.LocalTaskQuery"-->
+<!--            resultType="int">-->
+<!--        select count(distinct RES.ID_)-->
+<!--        from ${prefix}ACT_RU_TASK RES-->
+<!--        <include refid="selectCriteriaSqlLocal"/>-->
+
+<!--    </select>-->
+
+<!--    <select id="selectTaskWidthVariablesByQueryCriteriaLocal" parameterType="com.liyz.auth.service.process.model.LocalTaskQuery"-->
+<!--            resultMap="taskAndVariablesResultMap">-->
+<!--        select distinct RES.*,VAR.ID_ as VAR_ID_, VAR.NAME_ as VAR_NAME_, VAR.TYPE_ as VAR_TYPE_, VAR.REV_ as VAR_REV_,-->
+<!--        VAR.PROC_INST_ID_ as VAR_PROC_INST_ID_, VAR.EXECUTION_ID_ as VAR_EXECUTION_ID_, VAR.TASK_ID_ as VAR_TASK_ID_,-->
+<!--        VAR.BYTEARRAY_ID_ as VAR_BYTEARRAY_ID_, VAR.DOUBLE_ as VAR_DOUBLE_,-->
+<!--        VAR.TEXT_ as VAR_TEXT_, VAR.TEXT2_ as VAR_TEXT2_, VAR.LONG_ as VAR_LONG_-->
+<!--        from ${prefix}ACT_RU_TASK RES-->
+<!--        <choose>-->
+<!--            <when test="includeTaskLocalVariables &amp;&amp; includeProcessVariables">-->
+<!--                left outer join ${prefix}ACT_RU_VARIABLE VAR ON RES.ID_ = VAR.TASK_ID_ or RES.PROC_INST_ID_ =-->
+<!--                VAR.EXECUTION_ID_-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                <if test="includeTaskLocalVariables">-->
+<!--                    left outer join ${prefix}ACT_RU_VARIABLE VAR ON RES.ID_ = VAR.TASK_ID_-->
+<!--                </if>-->
+<!--                <if test="includeProcessVariables">-->
+<!--                    left outer join ${prefix}ACT_RU_VARIABLE VAR ON RES.PROC_INST_ID_ = VAR.EXECUTION_ID_ and-->
+<!--                    VAR.TASK_ID_ is null-->
+<!--                </if>-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--        <include refid="selectCriteriaSqlLocal"/>-->
+<!--        order by RES.create_time_ desc-->
+<!--    </select>-->
+
+<!--    <sql id="executionVariableOperator">-->
+<!--        <choose>-->
+<!--            <when test="var.operator.equals('EQUALS')">=</when>-->
+<!--            <when test="var.operator.equals('EQUALS_IGNORE_CASE')">=</when>-->
+<!--            <when test="var.operator.equals('NOT_EQUALS')">&lt;&gt;</when>-->
+<!--            <when test="var.operator.equals('NOT_EQUALS_IGNORE_CASE')">&lt;&gt;</when>-->
+<!--            <when test="var.operator.equals('GREATER_THAN')">&gt;</when>-->
+<!--            <when test="var.operator.equals('GREATER_THAN_OR_EQUAL')">&gt;=</when>-->
+<!--            <when test="var.operator.equals('LESS_THAN')">&lt;</when>-->
+<!--            <when test="var.operator.equals('LESS_THAN_OR_EQUAL')">&lt;=</when>-->
+<!--        </choose>-->
+<!--    </sql>-->
+
+<!--    <sql id="selectCriteriaSqlLocal">-->
+<!--        <if test="candidateUser != null || candidateGroups != null || bothCandidateAndAssigned">-->
+<!--            <choose>-->
+<!--                <when test="bothCandidateAndAssigned">left</when>-->
+<!--                <otherwise>inner</otherwise>-->
+<!--            </choose>-->
+<!--            join ${prefix}ACT_RU_IDENTITYLINK I on I.TASK_ID_ = RES.ID_-->
+<!--        </if>-->
+<!--        <foreach collection="queryVariableValues" index="index" item="var">-->
+<!--            <choose>-->
+<!--                <when test="var.local">-->
+<!--                    inner join ${prefix}ACT_RU_VARIABLE A${index} on RES.ID_ = A${index}.TASK_ID_-->
+<!--                </when>-->
+<!--                <otherwise>-->
+<!--                    inner join ${prefix}ACT_RU_VARIABLE A${index} on RES.PROC_INST_ID_ = A${index}.PROC_INST_ID_-->
+<!--                </otherwise>-->
+<!--            </choose>-->
+<!--        </foreach>-->
+<!--        <where>-->
+<!--            <if test="taskId != null">-->
+<!--                RES.ID_ = #{taskId}-->
+<!--            </if>-->
+<!--            <if test="name != null">-->
+<!--                and RES.NAME_ = #{name}-->
+<!--            </if>-->
+<!--            <if test="nameLike != null">-->
+<!--                and RES.NAME_ like #{nameLike}-->
+<!--            </if>-->
+<!--            <trim prefix="(" prefixOverrides="AND" suffix=")">-->
+<!--                <foreach item="processDefKeyAndTaskDefKey" index="keyIndex" collection="processDefKeyAndTaskDefKeys">-->
+<!--                    <if test="keyIndex>0">-->
+<!--                        OR-->
+<!--                    </if>-->
+<!--                    <trim prefix="(" prefixOverrides="OR" suffix=")">-->
+<!--                        <if test="processDefKeyAndTaskDefKey.processDefinitionKey != null">-->
+<!--                            locate(#{processDefKeyAndTaskDefKey.processDefinitionKey},RES.PROC_DEF_ID_)>0-->
+<!--                            <if test="processDefKeyAndTaskDefKey.taskDefinitionKey !=null">-->
+<!--                                AND TASK_DEF_KEY_ = #{processDefKeyAndTaskDefKey.taskDefinitionKey}-->
+<!--                            </if>-->
+<!--                        </if>-->
+<!--                    </trim>-->
+<!--                </foreach>-->
+<!--            </trim>-->
+<!--            <if test="!bothCandidateAndAssigned &amp;&amp; (candidateUser != null || candidateGroups != null)">-->
+<!--                and RES.ASSIGNEE_ is null-->
+<!--                and I.TYPE_ = 'candidate'-->
+<!--                and-->
+<!--                (-->
+<!--                <if test="candidateUser != null">-->
+<!--                    I.USER_ID_ = #{candidateUser}-->
+<!--                </if>-->
+<!--                <if test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">-->
+<!--                    or-->
+<!--                </if>-->
+<!--                <if test="candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">-->
+<!--                    I.GROUP_ID_ IN-->
+<!--                    <foreach item="group" index="index" collection="candidateGroups"-->
+<!--                             open="(" separator="," close=")">-->
+<!--                        #{group}-->
+<!--                    </foreach>-->
+<!--                </if>-->
+<!--                )-->
+<!--            </if>-->
+<!--            <choose>-->
+<!--                <when test="bothCandidateAndAssigned">-->
+<!--                    &lt;!&ndash; if dbIdentityUsed set true in process engine configuration &ndash;&gt;-->
+<!--                    <if test="userIdForCandidateAndAssignee != null">-->
+<!--                        <if test="candidateGroups == null">-->
+<!--                            and (RES.ASSIGNEE_ = #{userIdForCandidateAndAssignee} or (RES.ASSIGNEE_ is null and-->
+<!--                            (I.USER_ID_ = #{userIdForCandidateAndAssignee}-->
+<!--                            or I.GROUP_ID_ IN (select g.GROUP_ID_ from ${prefix}ACT_ID_MEMBERSHIP g where g.USER_ID_ =-->
+<!--                            #{userIdForCandidateAndAssignee} ) ) ) )-->
+<!--                        </if>-->
+<!--                    </if>-->
+<!--                    &lt;!&ndash; if dbIdentityUsed set false in process engine configuration of using custom session factory of GroupIdentityManager &ndash;&gt;-->
+<!--                    <if test="candidateGroups != null">-->
+<!--                        and (RES.ASSIGNEE_ = #{userIdForCandidateAndAssignee}-->
+<!--                        or (RES.ASSIGNEE_ is null-->
+<!--                        and I.TYPE_ = 'candidate' and (I.USER_ID_ = #{userIdForCandidateAndAssignee}-->
+<!--                        <if test="candidateGroups.size() &gt; 0">-->
+<!--                            or I.GROUP_ID_ IN-->
+<!--                            <foreach item="group" index="index" collection="candidateGroups"-->
+<!--                                     open="(" separator="," close=")">-->
+<!--                                #{group}-->
+<!--                            </foreach>-->
+<!--                        </if>-->
+<!--                        )))-->
+<!--                    </if>-->
+<!--                </when>-->
+<!--            </choose>-->
+
+<!--            <foreach item="var" collection="queryVariableValues" index="index">-->
+<!--                <if test="!var.local">-->
+<!--                    &lt;!&ndash; When process instance variable is queried for, taskId should be null &ndash;&gt;-->
+<!--                    and A${index}.TASK_ID_ is null-->
+<!--                </if>-->
+<!--                <if test="var.name != null">-->
+<!--                    &lt;!&ndash; Match-all variable-names when name is null &ndash;&gt;-->
+<!--                    and A${index}.NAME_= #{var.name}-->
+<!--                </if>-->
+<!--                <if test="var.name == null">-->
+<!--                    and A${index}.NAME_ is not null-->
+<!--                </if>-->
+<!--                <if test="var.type!=null &amp;&amp; !var.type.equals('null')">-->
+<!--                    and A${index}.TYPE_ = #{var.type}-->
+<!--                </if>-->
+
+<!--                &lt;!&ndash; Variable value &ndash;&gt;-->
+<!--                <if test="var.textValue != null &amp;&amp; var.longValue == null &amp;&amp; var.doubleValue == null">-->
+<!--                    <choose>-->
+<!--                        <when test="var.operator.equals('EQUALS_IGNORE_CASE') || var.operator.equals('NOT_EQUALS_IGNORE_CASE') || var.operator.equals('LIKE_IGNORE_CASE')">-->
+<!--                            and lower(A${index}.TEXT_)-->
+<!--                        </when>-->
+<!--                        <otherwise>-->
+<!--                            and A${index}.TEXT_-->
+<!--                        </otherwise>-->
+<!--                    </choose>-->
+<!--                    <choose>-->
+<!--                        <when test="var.operator.equals('LIKE') || var.operator.equals('LIKE_IGNORE_CASE')">LIKE</when>-->
+<!--                        <otherwise>-->
+<!--                            <include refid="executionVariableOperator"/>-->
+<!--                        </otherwise>-->
+<!--                    </choose>-->
+<!--                    #{var.textValue}-->
+<!--                </if>-->
+<!--                <if test="var.textValue2 != null">-->
+<!--                    and A${index}.TEXT2_-->
+<!--                    <choose>-->
+<!--                        <when test="var.operator.equals('LIKE')">LIKE</when>-->
+<!--                        <otherwise>-->
+<!--                            <include refid="executionVariableOperator"/>-->
+<!--                        </otherwise>-->
+<!--                    </choose>-->
+<!--                    #{var.textValue2}-->
+<!--                </if>-->
+<!--                <if test="var.longValue != null">-->
+<!--                    and A${index}.LONG_-->
+<!--                    <include refid="executionVariableOperator"/>-->
+<!--                    #{var.longValue}-->
+<!--                </if>-->
+<!--                <if test="var.doubleValue != null">-->
+<!--                    and A${index}.DOUBLE_-->
+<!--                    <include refid="executionVariableOperator"/>-->
+<!--                    #{var.doubleValue}-->
+<!--                </if>-->
+<!--                &lt;!&ndash; Null variable type &ndash;&gt;-->
+<!--                <if test="var.textValue == null &amp;&amp; var.textValue2 == null &amp;&amp; var.longValue == null &amp;&amp; var.doubleValue == null">-->
+<!--                    <choose>-->
+<!--                        <when test="var.operator.equals('NOT_EQUALS')">-->
+<!--                            and (A${index}.TEXT_ is not null or A${index}.TEXT2_ is not null or A${index}.LONG_ is not-->
+<!--                            null or A${index}.DOUBLE_ is not null or A${index}.BYTEARRAY_ID_ is not null)-->
+<!--                        </when>-->
+<!--                        <otherwise>-->
+<!--                            and A${index}.TEXT_ is null and A${index}.TEXT2_ is null and A${index}.LONG_ is null and-->
+<!--                            A${index}.DOUBLE_ is null and A${index}.BYTEARRAY_ID_ is null-->
+<!--                        </otherwise>-->
+<!--                    </choose>-->
+<!--                </if>-->
+<!--            </foreach>-->
+
+
+<!--        </where>-->
+<!--    </sql>-->
+
+</mapper>

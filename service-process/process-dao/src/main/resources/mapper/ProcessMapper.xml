@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyz.auth.service.process.dao.ProcessMapper" >
+
+    <resultMap id="defaultResult" type="com.liyz.auth.service.process.model.ProcessDO">
+        <id property="processId" column="PROC_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR" />
+        <result property="processName" column="PROCESS_NAME_" jdbcType="VARCHAR" />
+        <result property="processDefKey" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+        <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+        <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+        <result property="startUserId" column="START_USER_ID_" jdbcType="VARCHAR" />
+        <result property="taskName" column="TASK_NAME_" jdbcType="VARCHAR" />
+        <result property="taskId" column="TASK_ID_" jdbcType="VARCHAR" />
+        <result property="companyName" column="companyName" jdbcType="VARCHAR" />
+        <result property="companyId" column="companyId" jdbcType="VARCHAR" />
+        <result property="vipLevelCode" column="vipLevelCode" jdbcType="VARCHAR" />
+        <result property="taskCreateTime" column="CREATE_TIME_" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectPageProcessList" resultType="string">
+        select
+               a.PROC_INST_ID_
+        from
+             act_hi_procinst a
+        <if test="query.companyName != null and '' != query.companyName">
+             join act_hi_varinst compName on
+                 a.PROC_INST_ID_ = compName.PROC_INST_ID_
+                 and compName.NAME_ = 'companyName'
+                 and compName.TASK_ID_ is null
+        </if>
+        <include refid="processListCriteria" />
+        order by a.START_TIME_ desc
+        <include refid="limitSql"/>
+    </select>
+
+    <select id="selectPagedProcessDetail" resultMap="defaultResult" parameterType="list">
+        select
+               a.PROC_INST_ID_,
+               a.BUSINESS_KEY_,
+               a.PROC_DEF_ID_,
+                a.START_TIME_,
+                a.START_USER_ID_,
+                a.END_TIME_,
+                a.NAME_ PROCESS_NAME_,
+                b.NAME_ TASK_NAME_,
+                b.ID_ TASK_ID_,
+                b.CREATE_TIME_,
+               compName.TEXT_ companyName,
+               compId.TEXT_ companyId,
+               vip.TEXT_ vipLevelCode
+        from
+            act_hi_procinst a
+            left join act_ru_task b
+              on a.PROC_INST_ID_ = b.PROC_INST_ID_
+            left join
+             (
+             select
+                    PROC_INST_ID_,
+                    TEXT_
+             from
+                  act_hi_varinst
+             where
+                  PROC_INST_ID_ in
+                  <foreach collection="list" index="index" item="processId" separator=","
+                        open="(" close=")">
+                    #{processId}
+                  </foreach>
+               and NAME_ = 'companyName'
+               and TASK_ID_ is null) as compName
+                  on a.proc_inst_id_ = compName.proc_inst_id_
+                 left join (
+                           select
+                                   *
+                           from
+                                act_hi_varinst
+                           where
+                                   PROC_INST_ID_ in
+                    <foreach collection="list" index="index" item="processId" separator=","
+                             open="(" close=")">
+                        #{processId}
+                    </foreach>
+                             and NAME_ = 'companyId'
+                             and TASK_ID_ is null) as compId on
+                     compName.proc_inst_id_ = compId.proc_inst_id_
+                 left join (
+                           select
+                                   *
+                           from
+                                act_hi_varinst
+                           where
+                                   PROC_INST_ID_ in
+                    <foreach collection="list" index="index" item="processId" separator=","
+                             open="(" close=")">
+                        #{processId}
+                    </foreach>
+                             and NAME_ = 'vipLevelCode'
+                             and TASK_ID_ is null) as vip on
+                     compName.proc_inst_id_ = vip.proc_inst_id_
+                where
+                a.PROC_INST_ID_ in
+                <foreach collection="list" index="index" item="processId" separator=","
+                         open="(" close=")">
+                    #{processId}
+                </foreach>;
+    </select>
+
+    <select id="selectCountProcessList" resultType="java.lang.Integer" >
+        select
+               count(1)
+        from
+             act_hi_procinst a
+        <if test="query.companyName != null and '' != query.companyName">
+            join act_hi_varinst compName on
+              a.PROC_INST_ID_ = compName.PROC_INST_ID_
+            and compName.NAME_ = 'companyName'
+            and compName.TASK_ID_ is null
+        </if>
+        <include refid="processListCriteria" />
+    </select>
+
+    <sql id="processListCriteria">
+        where
+        a.DELETE_REASON_ is null
+        <if test="query.processName != null and '' != query.processName">
+            and a.NAME_ = #{query.processName}
+        </if>
+        <if test="query.processId != null and '' != query.processId">
+            and a.PROC_INST_ID_ = #{query.processId}
+        </if>
+        <if test="query.companyName != null and '' != query.companyName">
+            and compName.TEXT_ like #{query.companyName}
+        </if>
+        <if test="query.end != null">
+            <if test="query.end">
+                and a.END_TIME_ is not null
+            </if>
+            <if test="!query.end">
+                and a.END_TIME_ is null
+            </if>
+        </if>
+        <if test="query.startTimeLt != null">
+            and a.START_TIME_ &lt; #{query.startTimeLt}
+        </if>
+        <if test="query.startTimeGt != null">
+            and a.START_TIME_ &gt; #{query.startTimeGt}
+        </if>
+    </sql>
+
+    <sql id="limitSql">
+        limit #{pageNum},#{pageSize}
+    </sql>
+</mapper>
