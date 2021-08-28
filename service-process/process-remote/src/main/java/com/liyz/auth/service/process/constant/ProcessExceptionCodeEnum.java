@@ -12,6 +12,7 @@ import com.liyz.auth.common.remote.exception.IExceptionCodeService;
 public enum ProcessExceptionCodeEnum implements IExceptionCodeService {
     FILE_PATTERN_ERROR("70001", "流程文件格式不对"),
     TASK_HAS_SUBMIT("70002", "任务已被提交"),
+    TASK_SUBMIT_NON_RIGHT("70003", "该任务无权提交"),
     ;
 
     private String code;

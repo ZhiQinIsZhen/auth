@@ -2,11 +2,12 @@ package com.liyz.auth.service.process.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.liyz.auth.common.base.util.CommonCloneUtil;
+import com.liyz.auth.common.util.JsonMapperUtil;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
 import com.liyz.auth.service.process.bo.TaskInfoBO;
 import com.liyz.auth.service.process.bo.TaskSubmitBO;
+import com.liyz.auth.service.process.constant.ProcessExceptionCodeEnum;
 import com.liyz.auth.service.process.exception.RemoteProcessServiceException;
 import com.liyz.auth.service.process.service.ProcessService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,6 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.liyz.auth.service.process.constant.ProcessExceptionCodeEnum.TASK_HAS_SUBMIT;
 
 /**
  * 注释:
@@ -70,9 +69,15 @@ public class ProcessServiceImpl implements ProcessService {
         Authentication.setAuthenticatedUserId(taskSubmitBO.getSubmitUser());
         Task task = taskService.createTaskQuery().active().taskId(taskSubmitBO.getTaskId()).singleResult();
         if (Objects.isNull(task)) {
-            throw new RemoteProcessServiceException(TASK_HAS_SUBMIT);
+            throw new RemoteProcessServiceException(ProcessExceptionCodeEnum.TASK_HAS_SUBMIT);
         }
-        formService.submitTaskFormData(task.getId(), CommonCloneUtil.objectToMapString(taskSubmitBO));
+        List<IdentityLink> links = getIdentityLinksForTask(task.getId());
+        if (!CollectionUtils.isEmpty(links)) {
+            if (links.stream().filter(link -> link.getUserId().equals(taskSubmitBO.getSubmitUser())).count() == 0) {
+                throw new RemoteProcessServiceException(ProcessExceptionCodeEnum.TASK_SUBMIT_NON_RIGHT);
+            }
+        }
+        formService.submitTaskFormData(task.getId(), getBySubmit(taskSubmitBO));
         return Boolean.TRUE;
     }
 
@@ -219,5 +224,21 @@ public class ProcessServiceImpl implements ProcessService {
             processInfoBO.setTaskList(taskList);
         }
         return processInfoBO;
+    }
+
+    private Map<String, String> getBySubmit(TaskSubmitBO taskSubmitBO) {
+        Map<String, String> map = Maps.newHashMap();
+        if (Objects.nonNull(taskSubmitBO)) {
+            if (StringUtils.isNotBlank(taskSubmitBO.getIsPass())) {
+                map.put("isPass", taskSubmitBO.getIsPass());
+            }
+            if (StringUtils.isNotBlank(taskSubmitBO.getContent())) {
+                map.put("content", taskSubmitBO.getContent());
+            }
+            if (!CollectionUtils.isEmpty(taskSubmitBO.getFiles())) {
+                map.put("files", JsonMapperUtil.toJSONString(taskSubmitBO.getFiles()));
+            }
+        }
+        return map;
     }
 }
