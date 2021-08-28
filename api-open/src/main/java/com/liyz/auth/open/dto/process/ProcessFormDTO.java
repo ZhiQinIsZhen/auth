@@ -43,7 +43,14 @@ public class ProcessFormDTO implements Serializable {
      * 流程实例id
      */
     @ApiModelProperty(value = "流程实例id")
+    @NotBlank(groups = {Delete.class}, message = "流程实例id不能为空")
     private String processInstanceId;
 
+    @ApiModelProperty(value = "删除原因")
+    @NotBlank(groups = {Delete.class}, message = "删除原因不能为空")
+    private String deleteReason;
+
     public interface Start{}
+
+    public interface Delete{}
 }

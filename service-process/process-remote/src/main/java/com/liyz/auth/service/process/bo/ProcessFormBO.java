@@ -36,4 +36,9 @@ public class ProcessFormBO implements Serializable {
      * 流程实例id
      */
     private String processInstanceId;
+
+    /**
+     * 删除原因
+     */
+    private String deleteReason;
 }

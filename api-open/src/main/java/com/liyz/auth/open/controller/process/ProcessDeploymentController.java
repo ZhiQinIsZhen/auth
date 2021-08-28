@@ -11,6 +11,7 @@ import com.liyz.auth.open.vo.process.ProcessDefinitionVO;
 import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.service.process.bo.ProcessDefinitionBO;
 import com.liyz.auth.service.process.bo.ProcessDeployBO;
+import com.liyz.auth.service.process.constant.ProcessConstant;
 import com.liyz.auth.service.process.constant.ProcessExceptionCodeEnum;
 import com.liyz.auth.service.process.remote.RemoteProcessDeployService;
 import io.swagger.annotations.*;
@@ -54,7 +55,7 @@ public class ProcessDeploymentController {
             paramType = "header")
     public Result<Boolean> deploy(@RequestParam(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (!fileName.endsWith(".bpmn") && !fileName.endsWith(".zip")) {
+        if (!fileName.endsWith(ProcessConstant.BPMN_PATTERN) && !fileName.endsWith(ProcessConstant.ZIP_PATTERN)) {
             return Result.error(ProcessExceptionCodeEnum.FILE_PATTERN_ERROR);
         }
         ProcessDeployBO processDeployBO = new ProcessDeployBO();

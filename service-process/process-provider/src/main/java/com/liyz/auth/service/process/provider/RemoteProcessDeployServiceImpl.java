@@ -4,6 +4,7 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.remote.page.Page;
 import com.liyz.auth.service.process.bo.ProcessDefinitionBO;
 import com.liyz.auth.service.process.bo.ProcessDeployBO;
+import com.liyz.auth.service.process.constant.ProcessConstant;
 import com.liyz.auth.service.process.remote.RemoteProcessDeployService;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
@@ -40,10 +41,10 @@ public class RemoteProcessDeployServiceImpl implements RemoteProcessDeployServic
     public Boolean deploy(ProcessDeployBO processDeployBO) {
         Boolean result = Boolean.FALSE;
         InputStream inputStream = new ByteArrayInputStream(processDeployBO.getBytes());
-        if (processDeployBO.getFileName().endsWith(".bpmn")) {
+        if (processDeployBO.getFileName().endsWith(ProcessConstant.BPMN_PATTERN)) {
             repositoryService.createDeployment().addInputStream(processDeployBO.getFileName(), inputStream).deploy();
             result = Boolean.TRUE;
-        } else if (processDeployBO.getFileName().endsWith(".zip")) {
+        } else if (processDeployBO.getFileName().endsWith(ProcessConstant.ZIP_PATTERN)) {
             repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
             result = Boolean.TRUE;
         }
