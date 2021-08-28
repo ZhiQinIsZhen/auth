@@ -24,7 +24,7 @@ public class ProcessStartListener implements TypedEventListener {
 
     @Override
     public void onEvent(ActivitiEvent activitiEvent) {
-        log.info("processDefinitionId : {}, processInstanceId : {}",
+        log.info("######################  processDefinitionId : {}, processInstanceId : {}",
                 activitiEvent.getProcessDefinitionId(),
                 activitiEvent.getProcessInstanceId());
     }
