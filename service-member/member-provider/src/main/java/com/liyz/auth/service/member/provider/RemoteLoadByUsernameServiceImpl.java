@@ -36,8 +36,9 @@ public class RemoteLoadByUsernameServiceImpl implements RemoteLoadByUsernameServ
         if (StringUtils.isBlank(username)) {
             return null;
         }
-        if (!userInfoService.updateByUsername(username)) {
-            throw new RemoteServiceException(CommonExceptionCodeEnum.ParameterError);
+        boolean count = userInfoService.updateByUsername(username);
+        if (!count) {
+            log.error("userName : {}, login fail");
         }
         UserInfoDO userInfoDO = new UserInfoDO();
         userInfoDO.setLoginName(username);

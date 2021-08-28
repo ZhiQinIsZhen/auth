@@ -5,6 +5,8 @@ import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.auth.common.remote.exception.RemoteServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.rpc.RpcException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindException;
@@ -25,6 +27,7 @@ import java.util.Objects;
  * @date 2019/8/15 13:41
  */
 @Slf4j
+@Order(Ordered.LOWEST_PRECEDENCE)
 @RestControllerAdvice(annotations = {RestController.class, Controller.class, Service.class})
 public class ControllerExceptionHandleAdvice {
 
