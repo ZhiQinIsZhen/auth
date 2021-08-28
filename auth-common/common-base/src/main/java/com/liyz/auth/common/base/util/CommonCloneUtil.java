@@ -215,7 +215,7 @@ public final class CommonCloneUtil {
      * @return
      * @throws Exception
      */
-    public static Map<String, Object> objectToMap(Object obj) throws Exception {
+    public static Map<String, Object> objectToMap(Object obj) {
         if(obj == null){
             return null;
         }
@@ -225,7 +225,32 @@ public final class CommonCloneUtil {
         Field[] declaredFields = obj.getClass().getDeclaredFields();
         for (Field field : declaredFields) {
             field.setAccessible(true);
-            map.put(field.getName(), field.get(obj));
+            try {
+                map.put(field.getName(), field.get(obj));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return map;
+    }
+
+    public static Map<String, String> objectToMapString(Object obj) {
+        if(obj == null){
+            return null;
+        }
+
+        Map<String, String> map = Maps.newHashMap();
+
+        Field[] declaredFields = obj.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try {
+                if (Objects.nonNull(field.get(obj))) {
+                    map.put(field.getName(), field.get(obj).toString());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
         return map;
     }

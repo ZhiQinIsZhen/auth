@@ -2,6 +2,7 @@ package com.liyz.auth.service.process.service;
 
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
+import com.liyz.auth.service.process.bo.TaskSubmitBO;
 import org.activiti.engine.task.IdentityLink;
 
 import java.util.List;
@@ -23,6 +24,14 @@ public interface ProcessService {
      * @return
      */
     String startProcess(ProcessFormBO processFormBO);
+
+    /**
+     * 提交流程
+     *
+     * @param taskSubmitBO
+     * @return
+     */
+    Boolean submitTask(TaskSubmitBO taskSubmitBO);
 
     /**
      * 流程信息

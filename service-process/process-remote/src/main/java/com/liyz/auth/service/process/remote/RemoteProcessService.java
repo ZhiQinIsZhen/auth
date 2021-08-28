@@ -2,6 +2,7 @@ package com.liyz.auth.service.process.remote;
 
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
+import com.liyz.auth.service.process.bo.TaskSubmitBO;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Map;
@@ -23,7 +24,13 @@ public interface RemoteProcessService {
      */
     ProcessFormBO startProcess(ProcessFormBO processFormBO);
 
-    boolean submitTask();
+    /**
+     * 提交流程
+     *
+     * @param taskSubmitBO
+     * @return
+     */
+    boolean submitTask(TaskSubmitBO taskSubmitBO);
 
     /**
      * 获取流程详情

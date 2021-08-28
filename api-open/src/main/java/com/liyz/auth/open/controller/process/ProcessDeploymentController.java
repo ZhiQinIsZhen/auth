@@ -43,7 +43,7 @@ import java.util.List;
 @RequestMapping("/process")
 public class ProcessDeploymentController {
 
-    @DubboReference
+    @DubboReference(timeout = 60 * 1000)
     private RemoteProcessDeployService remoteProcessDeployService;
 
     @SneakyThrows

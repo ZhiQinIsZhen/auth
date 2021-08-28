@@ -2,6 +2,7 @@ package com.liyz.auth.service.process.provider;
 
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
+import com.liyz.auth.service.process.bo.TaskSubmitBO;
 import com.liyz.auth.service.process.remote.RemoteProcessService;
 import com.liyz.auth.service.process.service.ProcessService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +37,15 @@ public class RemoteProcessServiceImpl implements RemoteProcessService {
         return processFormBO;
     }
 
+    /**
+     * 提交流程
+     *
+     * @param taskSubmitBO
+     * @return
+     */
     @Override
-    public boolean submitTask() {
-        return false;
+    public boolean submitTask(TaskSubmitBO taskSubmitBO) {
+        return processService.submitTask(taskSubmitBO);
     }
 
     /**

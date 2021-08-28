@@ -5,6 +5,7 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.open.dto.process.ProcessFormDTO;
+import com.liyz.auth.open.dto.process.TaskSubmitDTO;
 import com.liyz.auth.open.vo.process.ProcessFormVO;
 import com.liyz.auth.open.vo.process.ProcessInfoVO;
 import com.liyz.auth.open.vo.process.TaskInfoVO;
@@ -12,6 +13,7 @@ import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
+import com.liyz.auth.service.process.bo.TaskSubmitBO;
 import com.liyz.auth.service.process.remote.RemoteProcessService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -60,12 +62,41 @@ public class ProcessController {
 
     @NonAuthority
     @Limits(value = {@Limit(count = 1)})
+    @ApiOperation(value = "提交任务", notes = "提交任务")
+    @PostMapping("/task/submit")
+    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
+            paramType = "header")
+    public Result<Boolean> submitTask(@RequestBody @Validated(TaskSubmitDTO.Submit.class) TaskSubmitDTO taskSubmitDTO) {
+        TaskSubmitBO taskSubmitBO = CommonCloneUtil.objectClone(taskSubmitDTO, TaskSubmitBO.class);
+        taskSubmitBO.setSubmitUser(AuthContext.getAuthUser().getUserId().toString());
+        return Result.success(remoteProcessService.submitTask(taskSubmitBO));
+    }
+
+    @NonAuthority
+    @Limits(value = {@Limit(count = 1)})
     @ApiOperation(value = "通过流程实例ID查询流程详情", notes = "通过流程实例ID查询流程详情")
     @GetMapping("/info")
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
     public Result<ProcessInfoVO> info(@RequestParam("processInstanceId") @ApiParam(value = "流程ID") String processInstanceId) {
         ProcessInfoBO processInfoBO = remoteProcessService.processInfo(processInstanceId);
+        ProcessInfoVO processInfoVO = CommonCloneUtil.objectClone(processInfoBO, ProcessInfoVO.class);
+        if (Objects.nonNull(processInfoBO) && !CollectionUtils.isEmpty(processInfoBO.getTaskList())) {
+            processInfoVO.setTaskList(CommonCloneUtil.ListClone(processInfoBO.getTaskList(), TaskInfoVO.class));
+        }
+        return Result.success(processInfoVO);
+    }
+
+    @NonAuthority
+    @Limits(value = {@Limit(count = 1)})
+    @ApiOperation(value = "通过流程定义key以及业务key查询最新流程信息", notes = "通过流程定义key以及业务key查询最新流程信息")
+    @GetMapping("/infoByProcessAndBusiness")
+    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
+            paramType = "header")
+    public Result<ProcessInfoVO> infoByProcessAndBusiness(
+            @RequestParam("processDefKey") @ApiParam(value = "流程定义key") String processDefKey,
+            @RequestParam("businessKey") @ApiParam(value = "业务key") String businessKey) {
+        ProcessInfoBO processInfoBO = remoteProcessService.getLastProcessByProcessAndBusiness(processDefKey, businessKey);
         ProcessInfoVO processInfoVO = CommonCloneUtil.objectClone(processInfoBO, ProcessInfoVO.class);
         if (Objects.nonNull(processInfoBO) && !CollectionUtils.isEmpty(processInfoBO.getTaskList())) {
             processInfoVO.setTaskList(CommonCloneUtil.ListClone(processInfoBO.getTaskList(), TaskInfoVO.class));
