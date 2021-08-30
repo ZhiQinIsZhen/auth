@@ -3,12 +3,8 @@ package com.liyz.auth.service.process.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.liyz.auth.common.remote.page.Page;
-import com.liyz.auth.common.remote.page.PageBaseBO;
 import com.liyz.auth.common.util.JsonMapperUtil;
-import com.liyz.auth.service.process.bo.ProcessFormBO;
-import com.liyz.auth.service.process.bo.ProcessInfoBO;
-import com.liyz.auth.service.process.bo.TaskInfoBO;
-import com.liyz.auth.service.process.bo.TaskSubmitBO;
+import com.liyz.auth.service.process.bo.*;
 import com.liyz.auth.service.process.constant.ProcessExceptionCodeEnum;
 import com.liyz.auth.service.process.exception.RemoteProcessServiceException;
 import com.liyz.auth.service.process.service.ProcessService;
@@ -17,13 +13,13 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.history.*;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfoQuery;
+import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -32,6 +28,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 注释:
@@ -170,15 +167,150 @@ public class ProcessServiceImpl implements ProcessService {
     /**
      * 查询待办列表
      *
-     * @param processFormBO
-     * @param pageBaseBO
+     * @param taskTodoQueryBO
      * @return
      */
     @Override
-    public Page<String> todoList(ProcessFormBO processFormBO, PageBaseBO pageBaseBO) {
-        //查询出待办人员角色
-        
-        return null;
+    public Page<TaskTodoBO> todoList(TaskTodoQueryBO taskTodoQueryBO) {
+        TaskInfoQuery<TaskQuery, Task> taskInfoQuery = taskService.createTaskQuery().or()
+                .taskCandidateOrAssigned(taskTodoQueryBO.getAssignee())
+                .taskCandidateGroupIn(taskTodoQueryBO.getRoleIds())
+                .endOr()
+                .orderByTaskPriority().desc()
+                .orderByTaskCreateTime().desc()
+                ;
+        //设置不显示任务
+        /*List<String> notShowCategory = new ArrayList<>();
+        notShowCategory.add("NOT_SHOW");
+        taskInfoQuery.processCategoryNotIn(notShowCategory);*/
+        if (StringUtils.isNotBlank(taskTodoQueryBO.getProcessInstanceId())) {
+            taskInfoQuery.processInstanceId(taskTodoQueryBO.getProcessInstanceId());
+        }
+        if (StringUtils.isNoneBlank(taskTodoQueryBO.getProcessDefKey())) {
+            taskInfoQuery.processDefinitionKey(taskTodoQueryBO.getProcessDefKey());
+        }
+        long totalCount = taskInfoQuery.count();
+        if (totalCount == 0) {
+            return new Page<>(Lists.newArrayList(), totalCount, 0, taskTodoQueryBO.getPageNum(),
+                    taskTodoQueryBO.getPageSize(), Boolean.FALSE);
+        }
+        long pages = totalCount % taskTodoQueryBO.getPageSize() == 0
+                ? (totalCount / taskTodoQueryBO.getPageSize())
+                : (totalCount / taskTodoQueryBO.getPageSize() + 1);
+        List<Task> taskList = taskInfoQuery.listPage((taskTodoQueryBO.getPageNum() - 1) * taskTodoQueryBO.getPageSize(),
+                taskTodoQueryBO.getPageSize());
+        if (CollectionUtils.isEmpty(taskList)) {
+            return new Page<>(Lists.newArrayList(), totalCount, (int) pages, taskTodoQueryBO.getPageNum(),
+                    taskTodoQueryBO.getPageSize(), pages > taskTodoQueryBO.getPageNum());
+        }
+        List<TaskTodoBO> taskTodoList = Lists.newArrayList();
+        taskList.stream().forEach(task -> {
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            List<String> variableList = Lists.newArrayList("startUser", "createTime", "VERSION");
+            Map<String, Object> processVariablesMap = taskService.getVariables(task.getId(), variableList);
+            TaskTodoBO taskTodoBO = new TaskTodoBO();
+            taskTodoBO.setTaskId(task.getId());
+            taskTodoBO.setProcessInstanceId(task.getProcessInstanceId());
+            taskTodoBO.setTaskName(task.getName());
+            taskTodoBO.setTaskDefKey(task.getTaskDefinitionKey());
+            taskTodoBO.setProcessDefKey(task.getProcessDefinitionId());
+            taskTodoBO.setBeginner((String) processVariablesMap.get("startUser"));
+            taskTodoBO.setCreateTime(historicProcessInstance.getStartTime());
+            taskTodoBO.setVersion(Optional.ofNullable((Integer) processVariablesMap.get("VERSION")).orElse(0));
+            taskTodoBO.setProcessName(historicProcessInstance.getName()); // 流程名称
+            taskTodoBO.setEnded(Objects.nonNull(historicProcessInstance.getEndTime())); // 流程状态
+            taskTodoBO.setBusinessKey(historicProcessInstance.getBusinessKey());
+            taskTodoBO.setExecutionId(task.getExecutionId());
+            taskTodoBO.setCommonBusVars(processVariablesMap);
+            taskTodoList.add(taskTodoBO);
+        });
+        return new Page<>(taskTodoList, totalCount, (int) pages, taskTodoQueryBO.getPageNum(),
+                taskTodoQueryBO.getPageSize(), pages > taskTodoQueryBO.getPageNum());
+    }
+
+    /**
+     * 办结列表
+     *
+     * @param taskTodoQueryBO
+     * @return
+     */
+    @Override
+    public Page<TaskDoneBO> doneList(TaskTodoQueryBO taskTodoQueryBO) {
+        //不显示的流程
+        List<String> notShowProcesses = Lists.newArrayList("process");
+        HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery().orderByProcessInstanceStartTime()
+                .processDefinitionKeyNotIn(notShowProcesses).desc();
+        if (StringUtils.isNotBlank(taskTodoQueryBO.getInvolvedUser())) {
+            query.involvedUser(taskTodoQueryBO.getInvolvedUser());
+        }
+        if (Objects.nonNull(taskTodoQueryBO.getFinished())) {
+            if (taskTodoQueryBO.getFinished()) {
+                query.finished();
+            } else {
+                query.unfinished();
+            }
+        }
+        if (StringUtils.isNotBlank(taskTodoQueryBO.getProcessInstanceId())) {
+            query.processInstanceId(taskTodoQueryBO.getProcessInstanceId());
+        }
+        if (StringUtils.isNotBlank(taskTodoQueryBO.getProcessName())) {
+            query.processInstanceNameLike("%" + taskTodoQueryBO.getProcessName() + "%");
+        }
+        long totalCount = query.count();
+        if (totalCount == 0) {
+            return new Page<>(Lists.newArrayList(), totalCount, 0, taskTodoQueryBO.getPageNum(),
+                    taskTodoQueryBO.getPageSize(), Boolean.FALSE);
+        }
+        long pages = totalCount % taskTodoQueryBO.getPageSize() == 0
+                ? (totalCount / taskTodoQueryBO.getPageSize())
+                : (totalCount / taskTodoQueryBO.getPageSize() + 1);
+        List<HistoricProcessInstance> processInstances = query.listPage((taskTodoQueryBO.getPageNum() - 1) * taskTodoQueryBO.getPageSize(),
+                taskTodoQueryBO.getPageSize());
+        if (CollectionUtils.isEmpty(processInstances)) {
+            return new Page<>(Lists.newArrayList(), totalCount, (int) pages, taskTodoQueryBO.getPageNum(),
+                    taskTodoQueryBO.getPageSize(), pages > taskTodoQueryBO.getPageNum());
+        }
+        List<TaskDoneBO> taskDoneList = Lists.newArrayList();
+        processInstances.stream().forEach(processInstance -> {
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(processInstance.getId())
+                    .includeProcessVariables()
+                    .singleResult();
+            Map<String, Object> processVariablesMap = historicProcessInstance.getProcessVariables();
+            TaskDoneBO taskDoneBO = new TaskDoneBO();
+            taskDoneBO.setProcessInstanceId(processInstance.getId());
+            taskDoneBO.setProcessDefKey(processInstance.getProcessDefinitionId());
+            taskDoneBO.setBeginner((String) processVariablesMap.get("startUser"));
+            taskDoneBO.setCreateTime(historicProcessInstance.getStartTime());
+            taskDoneBO.setVersion(Optional.ofNullable((Integer) processVariablesMap.get("VERSION")).orElse(0));
+            taskDoneBO.setProcessName(historicProcessInstance.getName()); // 流程名称
+            taskDoneBO.setEnded(Objects.nonNull(processInstance.getEndTime())); // 流程状态
+            taskDoneBO.setBusinessKey(historicProcessInstance.getBusinessKey());
+            taskDoneBO.setCommonBusVars(processVariablesMap);
+            if (Objects.isNull(processInstance.getEndTime())) {
+                List<HistoricActivityInstance> instances = historyService.createHistoricActivityInstanceQuery()
+                        .processInstanceId(processInstance.getId())
+                        .list();
+                instances.stream()
+                        .filter(activityInstance -> Objects.isNull(activityInstance.getEndTime()))
+                        .findFirst()
+                        .ifPresent(activityInstance -> {
+                            taskDoneBO.setTaskId(activityInstance.getTaskId());
+                            taskDoneBO.setTaskName(activityInstance.getActivityName()); // 任务名称
+                            taskDoneBO.setExecutionId(activityInstance.getExecutionId());
+                            taskDoneBO.setTaskCreateTime(activityInstance.getStartTime());
+                            if (StringUtils.isNotBlank(activityInstance.getTaskId())) {
+                                List<IdentityLink> links = getIdentityLinksForTask(activityInstance.getTaskId());
+                                if (!CollectionUtils.isEmpty(links)) {
+                                    //todo 可以设置审批人
+                                }
+                            }
+                        });
+            }
+            taskDoneList.add(taskDoneBO);
+        });
+        return new Page<>(taskDoneList, totalCount, (int) pages, taskTodoQueryBO.getPageNum(),
+                taskTodoQueryBO.getPageSize(), pages > taskTodoQueryBO.getPageNum());
     }
 
     /**
