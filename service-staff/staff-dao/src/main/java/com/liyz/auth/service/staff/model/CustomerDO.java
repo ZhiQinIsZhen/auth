@@ -29,8 +29,6 @@ public class CustomerDO implements Serializable {
 
     private String password;
 
-    private Integer roleId;
-
     private String mobile;
 
     private String email;

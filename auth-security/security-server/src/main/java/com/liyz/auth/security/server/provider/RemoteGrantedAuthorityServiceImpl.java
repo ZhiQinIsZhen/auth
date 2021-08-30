@@ -27,4 +27,10 @@ public class RemoteGrantedAuthorityServiceImpl implements RemoteGrantedAuthority
         List<GrantedAuthorityBO> boList = staffGrantedAuthorityService.getByRoleId(roleId);
         return CommonCloneUtil.ListClone(boList, GrantedAuthority.class);
     }
+
+    @Override
+    public List<GrantedAuthority> getByRoleIds(List<Integer> roleIds) {
+        List<GrantedAuthorityBO> boList = staffGrantedAuthorityService.getByRoleIds(roleIds);
+        return CommonCloneUtil.ListClone(boList, GrantedAuthority.class);
+    }
 }

@@ -23,4 +23,9 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
     public List<SysPermissionDO> getByRoleId(Integer roleId) {
         return getBaseMapper().getByRoleId(roleId);
     }
+
+    @Override
+    public List<SysPermissionDO> getByRoleIds(List<Integer> roleIds) {
+        return getBaseMapper().getByRoleIds(roleIds);
+    }
 }

@@ -2,6 +2,8 @@ package com.liyz.auth.service.process.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.liyz.auth.common.remote.page.Page;
+import com.liyz.auth.common.remote.page.PageBaseBO;
 import com.liyz.auth.common.util.JsonMapperUtil;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
@@ -163,6 +165,20 @@ public class ProcessServiceImpl implements ProcessService {
         Authentication.setAuthenticatedUserId(processFormBO.getApplicant());
         runtimeService.deleteProcessInstance(processFormBO.getProcessInstanceId(), processFormBO.getDeleteReason());
         return Boolean.TRUE;
+    }
+
+    /**
+     * 查询待办列表
+     *
+     * @param processFormBO
+     * @param pageBaseBO
+     * @return
+     */
+    @Override
+    public Page<String> todoList(ProcessFormBO processFormBO, PageBaseBO pageBaseBO) {
+        //查询出待办人员角色
+        
+        return null;
     }
 
     /**

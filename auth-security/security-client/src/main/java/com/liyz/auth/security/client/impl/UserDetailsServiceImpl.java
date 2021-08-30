@@ -68,9 +68,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (authority) {
             List<GrantedAuthority> boList = null;
             if (SecurityEnum.AudienceType.Member.getCode().equals(audienceType)) {
-                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleId(authUser.getRoleId());
+                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleIds(authUser.getRoleIds());
             } else if (SecurityEnum.AudienceType.Staff.getCode().equals(audienceType)) {
-                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleId(authUser.getRoleId());
+                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleIds(authUser.getRoleIds());
             }
             List<AuthGrantedAuthority> authorityList = new ArrayList<>(boList.size());
             boList.stream().forEach(grantedAuthorityBO -> {
@@ -102,7 +102,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         return new AuthUserDetails(
                 authUser.getUserId(),
-                authUser.getRoleId(),
+                authUser.getRoleIds(),
                 authUser.getUserName(),
                 authUser.getLoginPwd(),
                 authUser.getMobile(),

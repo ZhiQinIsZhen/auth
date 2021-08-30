@@ -14,4 +14,6 @@ import java.util.List;
 public interface RemoteGrantedAuthorityService {
 
     List<GrantedAuthority> getByRoleId(Integer roleId);
+
+    List<GrantedAuthority> getByRoleIds(List<Integer> roleIds);
 }

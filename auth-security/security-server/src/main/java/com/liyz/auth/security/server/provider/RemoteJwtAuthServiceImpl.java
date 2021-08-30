@@ -17,6 +17,7 @@ import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Objects;
 
@@ -77,8 +78,8 @@ public class RemoteJwtAuthServiceImpl implements RemoteJwtAuthService {
         }
         AuthUserBO authUserBO = staffUsernameService.loadByUsername(username);
         AuthUser authUser = CommonCloneUtil.objectClone(authUserBO, AuthUser.class);
-        if (Objects.nonNull(authUser) && Objects.nonNull(authUser.getRoleId())) {
-            authUser.setAuthorityList(remoteGrantedAuthorityService.getByRoleId(authUserBO.getRoleId()));
+        if (Objects.nonNull(authUser) && !CollectionUtils.isEmpty(authUser.getRoleIds())) {
+            authUser.setAuthorityList(remoteGrantedAuthorityService.getByRoleIds(authUserBO.getRoleIds()));
         }
         return authUser;
     }

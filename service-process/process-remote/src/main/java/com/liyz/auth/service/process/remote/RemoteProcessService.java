@@ -1,10 +1,13 @@
 package com.liyz.auth.service.process.remote;
 
+import com.liyz.auth.common.remote.page.Page;
+import com.liyz.auth.common.remote.page.PageBaseBO;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
 import com.liyz.auth.service.process.bo.TaskSubmitBO;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,4 +75,13 @@ public interface RemoteProcessService {
      * @return
      */
     Boolean deleteProcess(ProcessFormBO processFormBO);
+
+    /**
+     * 待办列表
+     *
+     * @param processFormBO
+     * @param pageBaseBO
+     * @return
+     */
+    Page<String> todoList(ProcessFormBO processFormBO, PageBaseBO pageBaseBO);
 }

@@ -14,4 +14,6 @@ import java.util.List;
 public interface ISysRolePermissionService {
 
     List<SysPermissionDO> getByRoleId(Integer roleId);
+
+    List<SysPermissionDO> getByRoleIds(List<Integer> roleIds);
 }

@@ -1,5 +1,7 @@
 package com.liyz.auth.service.process.service;
 
+import com.liyz.auth.common.remote.page.Page;
+import com.liyz.auth.common.remote.page.PageBaseBO;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
 import com.liyz.auth.service.process.bo.TaskSubmitBO;
@@ -73,4 +75,13 @@ public interface ProcessService {
      * @return
      */
     Boolean deleteProcess(ProcessFormBO processFormBO);
+
+    /**
+     * 查询待办列表
+     *
+     * @param processFormBO
+     * @param pageBaseBO
+     * @return
+     */
+    Page<String> todoList(ProcessFormBO processFormBO, PageBaseBO pageBaseBO);
 }

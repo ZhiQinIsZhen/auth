@@ -65,7 +65,7 @@ public class AuthenticationController {
                 .nickName(authUserDetails.getNikeName())
                 .email(authUserDetails.getEmail())
                 .mobile(authUserDetails.getMobile())
-                .roleId(authUserDetails.getRoleId())
+                .roleIds(authUserDetails.getRoleIds())
                 .token(JwtContextHolder.getJWT(authUserDetails.getLastWebPasswordResetDate(), SecurityEnum.AudienceType.Staff))
                 .build();
         return Result.success(loginVO);

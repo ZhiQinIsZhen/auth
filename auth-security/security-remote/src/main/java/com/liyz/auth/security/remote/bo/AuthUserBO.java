@@ -27,7 +27,7 @@ public class AuthUserBO implements Serializable {
 
     private String userName;
 
-    private Integer roleId;
+    private List<Integer> roleIds;
 
     private String mobile;
 

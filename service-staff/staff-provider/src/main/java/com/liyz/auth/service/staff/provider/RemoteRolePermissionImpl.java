@@ -7,6 +7,7 @@ import com.liyz.auth.security.remote.RemoteGrantedAuthorityService;
 import com.liyz.auth.security.remote.bo.GrantedAuthorityBO;
 import com.liyz.auth.service.staff.service.ISysRolePermissionService;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,5 +32,13 @@ public class RemoteRolePermissionImpl implements RemoteGrantedAuthorityService {
             return Lists.newArrayList();
         }
         return CommonCloneUtil.ListClone(sysRolePermissionService.getByRoleId(roleId), GrantedAuthorityBO.class);
+    }
+
+    @Override
+    public List<GrantedAuthorityBO> getByRoleIds(List<Integer> roleIds) {
+        if (CollectionUtils.isEmpty(roleIds)) {
+            return Lists.newArrayList();
+        }
+        return CommonCloneUtil.ListClone(sysRolePermissionService.getByRoleIds(roleIds), GrantedAuthorityBO.class);
     }
 }

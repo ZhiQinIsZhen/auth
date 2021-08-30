@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 注释:
@@ -35,7 +36,7 @@ public class LoginVO implements Serializable {
     private String nickName;
 
     @ApiModelProperty(value = "用户角色", example = "用户角色")
-    private Integer roleId;
+    private List<Integer> roleIds;
 
     @Desensitization(DesensitizationType.REAL_NAME)
     @ApiModelProperty(value = "昵称", example = "张三")

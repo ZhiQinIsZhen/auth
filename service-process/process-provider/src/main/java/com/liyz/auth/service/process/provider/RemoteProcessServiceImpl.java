@@ -1,5 +1,7 @@
 package com.liyz.auth.service.process.provider;
 
+import com.liyz.auth.common.remote.page.Page;
+import com.liyz.auth.common.remote.page.PageBaseBO;
 import com.liyz.auth.service.process.bo.ProcessFormBO;
 import com.liyz.auth.service.process.bo.ProcessInfoBO;
 import com.liyz.auth.service.process.bo.TaskSubmitBO;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -104,5 +107,15 @@ public class RemoteProcessServiceImpl implements RemoteProcessService {
         return processService.deleteProcess(processFormBO);
     }
 
-
+    /**
+     * 待办列表
+     *
+     * @param processFormBO
+     * @param pageBaseBO
+     * @return
+     */
+    @Override
+    public Page<String> todoList(ProcessFormBO processFormBO, PageBaseBO pageBaseBO) {
+        return processService.todoList(processFormBO, pageBaseBO);
+    }
 }
