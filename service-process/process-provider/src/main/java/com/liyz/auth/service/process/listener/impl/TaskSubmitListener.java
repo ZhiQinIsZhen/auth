@@ -11,22 +11,23 @@ import org.springframework.stereotype.Service;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2021/8/27 17:42
+ * @date 2021/8/30 9:54
  */
 @Slf4j
 @Service
-public class ProcessStartListener implements TypedEventListener {
+public class TaskSubmitListener implements TypedEventListener {
 
     @Override
     public ActivitiEventType[] getType() {
-        return new ActivitiEventType[]{ActivitiEventType.PROCESS_STARTED};
+        return new ActivitiEventType[]{ActivitiEventType.TASK_COMPLETED};
     }
 
     @Override
     public void onEvent(ActivitiEvent activitiEvent) {
-        log.info("######################  process start  processDefinitionId : {}, processInstanceId : {}",
+        log.info("###################### task submit  processDefinitionId : {}, processInstanceId : {}, executionId : {}",
                 activitiEvent.getProcessDefinitionId(),
-                activitiEvent.getProcessInstanceId());
+                activitiEvent.getProcessInstanceId(),
+                activitiEvent.getExecutionId());
     }
 
     @Override
