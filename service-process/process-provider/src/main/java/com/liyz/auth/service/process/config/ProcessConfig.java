@@ -118,7 +118,6 @@ public class ProcessConfig implements ApplicationListener<ApplicationStartedEven
      */
     @Override
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
-        log.info("应用启动完成啦");
         RuntimeService runtimeService = applicationStartedEvent.getApplicationContext().getBean("runtimeService", RuntimeService.class);
         Collection<ActivitiEventListener> values = applicationStartedEvent.getApplicationContext().getBeansOfType(ActivitiEventListener.class).values();
         values.forEach(activitiEventListener -> {

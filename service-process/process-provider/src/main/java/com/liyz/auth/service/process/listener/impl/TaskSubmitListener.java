@@ -4,6 +4,8 @@ import com.liyz.auth.service.process.listener.TypedEventListener;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventType;
+import org.activiti.engine.delegate.event.impl.ActivitiEntityWithVariablesEventImpl;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,10 +26,16 @@ public class TaskSubmitListener implements TypedEventListener {
 
     @Override
     public void onEvent(ActivitiEvent activitiEvent) {
-        log.info("###################### task submit  processDefinitionId : {}, processInstanceId : {}, executionId : {}",
-                activitiEvent.getProcessDefinitionId(),
-                activitiEvent.getProcessInstanceId(),
-                activitiEvent.getExecutionId());
+        if (activitiEvent instanceof ActivitiEntityWithVariablesEventImpl) {
+            log.info("###################### task submit  processDefinitionId : {}, processInstanceId : {}, taskId : {}",
+                    activitiEvent.getProcessDefinitionId(),
+                    activitiEvent.getProcessInstanceId(),
+                    ((TaskEntity) ((ActivitiEntityWithVariablesEventImpl) activitiEvent).getEntity()).getId());
+        } else {
+            log.info("###################### task submit  processDefinitionId : {}, processInstanceId : {}",
+                    activitiEvent.getProcessDefinitionId(),
+                    activitiEvent.getProcessInstanceId());
+        }
     }
 
     @Override

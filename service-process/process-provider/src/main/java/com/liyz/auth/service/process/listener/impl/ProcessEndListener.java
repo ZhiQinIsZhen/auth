@@ -19,7 +19,7 @@ public class ProcessEndListener implements TypedEventListener {
 
     @Override
     public ActivitiEventType[] getType() {
-        return new ActivitiEventType[]{ActivitiEventType.PROCESS_COMPLETED, ActivitiEventType.PROCESS_COMPLETED};
+        return new ActivitiEventType[]{ActivitiEventType.PROCESS_CANCELLED, ActivitiEventType.PROCESS_COMPLETED};
     }
 
     @Override
