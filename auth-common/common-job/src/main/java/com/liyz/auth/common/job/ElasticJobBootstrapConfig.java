@@ -37,7 +37,7 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
 
     @PostConstruct
     public void createJobBootstrapBeans() {
-        ElasticJobProperties elasticJobProperties = (ElasticJobProperties)this.applicationContext.getBean(ElasticJobProperties.class);
+        ElasticJobProperties elasticJobProperties = this.applicationContext.getBean(ElasticJobProperties.class);
         //扫描目标类
         Map<String, Object> beanMap = this.applicationContext.getBeansWithAnnotation(com.liyz.auth.common.job.annotation.ElasticJob .class);
         if (beanMap != null && beanMap.size() > 0) {
@@ -56,7 +56,7 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
             }
         }
         SingletonBeanRegistry singletonBeanRegistry = ((ConfigurableApplicationContext)this.applicationContext).getBeanFactory();
-        CoordinatorRegistryCenter registryCenter = (CoordinatorRegistryCenter)this.applicationContext.getBean(CoordinatorRegistryCenter.class);
+        CoordinatorRegistryCenter registryCenter = this.applicationContext.getBean(CoordinatorRegistryCenter.class);
         TracingConfiguration<?> tracingConfig = this.getTracingConfiguration();
         this.constructJobBootstraps(elasticJobProperties, singletonBeanRegistry, registryCenter, tracingConfig);
     }
@@ -77,13 +77,13 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
 
         while(var5.hasNext()) {
             Map.Entry<String, ElasticJobConfigurationProperties> entry = (Map.Entry)var5.next();
-            ElasticJobConfigurationProperties jobConfigurationProperties = (ElasticJobConfigurationProperties)entry.getValue();
+            ElasticJobConfigurationProperties jobConfigurationProperties = entry.getValue();
             Preconditions.checkArgument(null != jobConfigurationProperties.getElasticJobClass() || !Strings.isNullOrEmpty(jobConfigurationProperties.getElasticJobType()), "Please specific [elasticJobClass] or [elasticJobType] under job configuration.");
             Preconditions.checkArgument(null == jobConfigurationProperties.getElasticJobClass() || Strings.isNullOrEmpty(jobConfigurationProperties.getElasticJobType()), "[elasticJobClass] and [elasticJobType] are mutually exclusive.");
             if (null != jobConfigurationProperties.getElasticJobClass()) {
-                this.registerClassedJob((String)entry.getKey(), ((ElasticJobConfigurationProperties)entry.getValue()).getJobBootstrapBeanName(), singletonBeanRegistry, registryCenter, tracingConfig, jobConfigurationProperties);
+                this.registerClassedJob(entry.getKey(), (entry.getValue()).getJobBootstrapBeanName(), singletonBeanRegistry, registryCenter, tracingConfig, jobConfigurationProperties);
             } else if (!Strings.isNullOrEmpty(jobConfigurationProperties.getElasticJobType())) {
-                this.registerTypedJob((String)entry.getKey(), ((ElasticJobConfigurationProperties)entry.getValue()).getJobBootstrapBeanName(), singletonBeanRegistry, registryCenter, tracingConfig, jobConfigurationProperties);
+                this.registerTypedJob(entry.getKey(), (entry.getValue()).getJobBootstrapBeanName(), singletonBeanRegistry, registryCenter, tracingConfig, jobConfigurationProperties);
             }
         }
 
@@ -94,7 +94,7 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
         Optional var10000 = Optional.ofNullable(tracingConfig);
         Collection var10001 = jobConfig.getExtraConfigurations();
         var10000.ifPresent(var10001::add);
-        ElasticJob elasticJob = (ElasticJob)this.applicationContext.getBean(jobConfigurationProperties.getElasticJobClass());
+        ElasticJob elasticJob = this.applicationContext.getBean(jobConfigurationProperties.getElasticJobClass());
         if (Strings.isNullOrEmpty(jobConfig.getCron())) {
             Preconditions.checkArgument(!Strings.isNullOrEmpty(jobBootstrapBeanName), "The property [jobBootstrapBeanName] is required for One-off job.");
             singletonBeanRegistry.registerSingleton(jobBootstrapBeanName, new OneOffJobBootstrap(registryCenter, elasticJob, jobConfig));
