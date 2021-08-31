@@ -44,15 +44,17 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
             for (Map.Entry<String, Object> entry : beanMap.entrySet()) {
                 String beanName = entry.getKey();
                 Class<?> clz = entry.getValue().getClass();
-                com.liyz.auth.common.job.annotation.ElasticJob elasticJob =
-                        clz.getAnnotation(com.liyz.auth.common.job.annotation.ElasticJob.class);
-                ElasticJobConfigurationProperties properties = new ElasticJobConfigurationProperties();
-                properties.setElasticJobClass((Class<? extends ElasticJob>) clz);
-                properties.setCron(elasticJob.cron());
-                properties.setShardingTotalCount(elasticJob.shardingTotalCount());
-                properties.setShardingItemParameters(elasticJob.shardingItemParameters());
-                properties.setOverwrite(elasticJob.overwrite());
-                elasticJobProperties.getJobs().put(beanName, properties);
+                if (ElasticJob.class.isAssignableFrom(clz)) {
+                    com.liyz.auth.common.job.annotation.ElasticJob elasticJob =
+                            clz.getAnnotation(com.liyz.auth.common.job.annotation.ElasticJob.class);
+                    ElasticJobConfigurationProperties properties = new ElasticJobConfigurationProperties();
+                    properties.setElasticJobClass((Class<? extends ElasticJob>) clz);
+                    properties.setCron(elasticJob.cron());
+                    properties.setShardingTotalCount(elasticJob.shardingTotalCount());
+                    properties.setShardingItemParameters(elasticJob.shardingItemParameters());
+                    properties.setOverwrite(elasticJob.overwrite());
+                    elasticJobProperties.getJobs().put(beanName, properties);
+                }
             }
         }
         SingletonBeanRegistry singletonBeanRegistry = ((ConfigurableApplicationContext)this.applicationContext).getBeanFactory();
