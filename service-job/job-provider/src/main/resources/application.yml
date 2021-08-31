@@ -58,7 +58,7 @@ elasticjob:
     enabled: true
   enabled: false
   tracing:
-    type: MySQL
+    type: RDB
   reg-center:
     server-lists: localhost:2181
     namespace: auth-service-job
