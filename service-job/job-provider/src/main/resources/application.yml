@@ -54,14 +54,12 @@ logging:
     org.springframework.jdbc.*: debug
 
 elasticjob:
+  auto:
+    enabled: true
+  enabled: false
   tracing:
     type: MySQL
   reg-center:
     server-lists: localhost:2181
     namespace: auth-service-job
-  jobs:
-    simpleJob:
-      elasticJobClass: com.liyz.auth.service.job.service.impl.TestSimpleJob
-      cron: 0/5 * * * * ?
-      shardingTotalCount: 3
-      shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
+

@@ -17,12 +17,12 @@ import java.util.Date;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2021/8/31 13:24
+ * @date 2021/8/31 14:43
  */
 @Slf4j
-@ElasticJob(cron = "0/5 * * * * ?", shardingTotalCount = 3, shardingItemParameters = "0=Beijing,1=Shanghai,2=Guangzhou")
+@ElasticJob(cron = "0/10 * * * * ?", shardingTotalCount = 1, shardingItemParameters = "0=Beijing")
 @Component
-public class TestSimpleJob implements SimpleJob {
+public class TestASimpleJob implements SimpleJob {
 
     @DubboReference
     private RemoteCustomerService remoteCustomerService;
@@ -34,6 +34,6 @@ public class TestSimpleJob implements SimpleJob {
                 new SimpleDateFormat("HH:mm:ss").format(new Date()),
                 Thread.currentThread().getId(),
                 "SIMPLE");
-        log.info("customer:{}", JsonMapperUtil.toJSONString(remoteCustomerService.getByUsername("15988654730")));
+        log.info("customer:{}", JsonMapperUtil.toJSONString(remoteCustomerService.getByUsername("25988654730")));
     }
 }

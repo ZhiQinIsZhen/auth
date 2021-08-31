@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.liyz.auth.common.job.ElasticJobLiteAutoConfig
