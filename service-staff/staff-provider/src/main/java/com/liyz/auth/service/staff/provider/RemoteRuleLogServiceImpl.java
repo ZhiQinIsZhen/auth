@@ -1,14 +1,11 @@
 package com.liyz.auth.service.staff.provider;
 
-import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
-import com.liyz.auth.service.staff.exception.RemoteStaffServiceException;
 import com.liyz.auth.service.staff.model.RuleLogDO;
 import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import com.liyz.auth.service.staff.service.IRuleLogService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
@@ -35,9 +32,6 @@ public class RemoteRuleLogServiceImpl implements RemoteRuleLogService {
         RuleLogDO ruleLogDO = new RuleLogDO();
         ruleLogDO.setName(username);
         ruleLogDO.setPwd("Aa123456");
-        if (StringUtils.isNotBlank(username)) {
-            throw new RemoteStaffServiceException(CommonExceptionCodeEnum.ParameterError);
-        }
         ruleLogService.save(ruleLogDO);
     }
 }

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/order")
 public class OrderController {
 
-    @DubboReference
+    @DubboReference(timeout = 50000)
     private RemoteOrderService remoteOrderService;
 
     @Anonymous

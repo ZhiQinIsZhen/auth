@@ -25,7 +25,7 @@ public class RemoteOrderServiceImpl implements RemoteOrderService {
 
     @Resource
     private IOrderService orderService;
-    @DubboReference
+    @DubboReference(timeout = 50000)
     private RemoteRuleLogService remoteRuleLogService;
 
     @Override
