@@ -47,13 +47,13 @@ public class ElasticJobBootstrapConfig implements ApplicationContextAware, BeanP
                 if (ElasticJob.class.isAssignableFrom(clz)) {
                     com.liyz.auth.common.job.annotation.ElasticJob elasticJob =
                             clz.getAnnotation(com.liyz.auth.common.job.annotation.ElasticJob.class);
-                    ElasticJobConfigurationProperties properties = new ElasticJobConfigurationProperties();
-                    properties.setElasticJobClass((Class<? extends ElasticJob>) clz);
-                    properties.setCron(elasticJob.cron());
-                    properties.setShardingTotalCount(elasticJob.shardingTotalCount());
-                    properties.setShardingItemParameters(elasticJob.shardingItemParameters());
-                    properties.setOverwrite(elasticJob.overwrite());
-                    elasticJobProperties.getJobs().put(beanName, properties);
+                    ElasticJobConfigurationProperties Properties = new ElasticJobConfigurationProperties();
+                    Properties.setElasticJobClass((Class<? extends ElasticJob>) clz);
+                    Properties.setCron(elasticJob.cron());
+                    Properties.setShardingTotalCount(elasticJob.shardingTotalCount());
+                    Properties.setShardingItemParameters(elasticJob.shardingItemParameters());
+                    Properties.setOverwrite(elasticJob.overwrite());
+                    elasticJobProperties.getJobs().put(beanName, Properties);
                 }
             }
         }
