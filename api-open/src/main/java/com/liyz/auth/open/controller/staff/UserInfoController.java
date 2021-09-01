@@ -5,10 +5,13 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.open.vo.staff.UserInfoVO;
+import com.liyz.auth.security.base.annotation.Anonymous;
 import com.liyz.auth.security.base.annotation.NonAuthority;
 import com.liyz.auth.security.client.AuthContext;
+import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +38,9 @@ import java.util.Objects;
 @RequestMapping("/user")
 public class UserInfoController {
 
+    @DubboReference
+    private RemoteRuleLogService remoteRuleLogService;
+
     @Limits(value = {@Limit(count = 1)})
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
@@ -54,4 +60,12 @@ public class UserInfoController {
         return Result.success(Objects.isNull(AuthContext.getAuthUser()) ? null : AuthContext.getAuthUser().getUserId());
     }
 
+    @Anonymous
+    @Limits(value = {@Limit(count = 1)})
+    @ApiOperation(value = "创建数据", notes = "创建数据")
+    @GetMapping("/insert")
+    public Result<Boolean> insert() {
+        remoteRuleLogService.insert("CN0001");
+        return Result.success(Boolean.TRUE);
+    }
 }

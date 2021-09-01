@@ -91,5 +91,16 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>common-seata</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liyz.auth</groupId>
+            <artifactId>staff-remote</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 </project>

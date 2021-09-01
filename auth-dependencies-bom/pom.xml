@@ -22,7 +22,7 @@
         <knife4j.version>2.0.9</knife4j.version>
         <redisson.version>3.15.0</redisson.version>
         <spring.kafka.version>2.5.1.RELEASE</spring.kafka.version>
-        <seata.version>1.4.1</seata.version>
+        <seata.version>1.4.2</seata.version>
         <elasticjob.version>3.0.0</elasticjob.version>
         <revision>1.0.0-SNAPSHOT</revision>
     </properties>
@@ -133,11 +133,6 @@
                 <version>${spring.kafka.version}</version>
             </dependency>
             <!-- seata -->
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-all</artifactId>
-                <version>${seata.version}</version>
-            </dependency>
             <dependency>
                 <groupId>io.seata</groupId>
                 <artifactId>seata-spring-boot-starter</artifactId>

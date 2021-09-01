@@ -69,4 +69,17 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .extensions(openApiExtensionResolver.buildSettingExtensions())
                 .groupName("流程-API");
     }
+
+    @Bean
+    public Docket createOrderApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.auth.open.controller.order"))
+                .paths(PathSelectors.any())
+                .build()
+                .extensions(openApiExtensionResolver.buildSettingExtensions())
+                .groupName("订单-API");
+    }
 }
