@@ -93,9 +93,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.liyz.auth</groupId>
-            <artifactId>common-seata</artifactId>
-            <version>${revision}</version>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.liyz.auth</groupId>

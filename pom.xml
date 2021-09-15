@@ -20,7 +20,7 @@
         <module>service-order</module>
         <module>service-process</module>
         <module>service-job</module>
-        <module>auth-common/common-seata</module>
+        <module>service-netty</module>
     </modules>
 
     <properties>

@@ -1,5 +1,6 @@
 package com.liyz.auth.service.order.provider;
 
+import com.liyz.auth.common.base.trace.annotation.Logs;
 import com.liyz.auth.service.order.model.OrderDO;
 import com.liyz.auth.service.order.remote.RemoteOrderService;
 import com.liyz.auth.service.order.service.IOrderService;
@@ -29,10 +30,12 @@ public class RemoteOrderServiceImpl implements RemoteOrderService {
     private RemoteRuleLogService remoteRuleLogService;
 
     @Override
+    @Logs
     @GlobalTransactional(timeoutMills = 300000, name = "order-tx")
     public void insert(String orderCode) {
         String xid = RootContext.getXID();
         log.info("xid : {}", xid);
+        orderService.getById(28);
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderCode(orderCode);
         orderService.save(orderDO);
