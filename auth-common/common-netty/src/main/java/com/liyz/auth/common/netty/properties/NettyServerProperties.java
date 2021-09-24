@@ -26,5 +26,7 @@ public class NettyServerProperties {
 
     private boolean enableClientBatchSendRequest;
 
+    private int shutdownWait;
+
     private ThreadFactoryProperties threadFactory;
 }
