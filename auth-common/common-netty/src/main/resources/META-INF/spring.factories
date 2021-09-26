@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.liyz.auth.common.netty.NettyServer
+com.liyz.auth.common.netty.NettyServer,\
+com.liyz.auth.common.netty.NettyClient

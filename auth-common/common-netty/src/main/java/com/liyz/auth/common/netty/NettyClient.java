@@ -1,8 +1,9 @@
 package com.liyz.auth.common.netty;
 
 import com.liyz.auth.common.netty.properties.NettyServerProperties;
-import com.liyz.auth.common.netty.rpc.NettyRemotingServer;
+import com.liyz.auth.common.netty.rpc.NettyRemotingClient;
 import com.liyz.auth.common.netty.thread.NamedThreadFactory;
+import com.liyz.auth.common.netty.thread.RejectedPolicies;
 import com.liyz.auth.common.netty.thread.ShutdownHook;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,22 +21,15 @@ import java.util.concurrent.TimeUnit;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2021/9/15 11:20
+ * @date 2021/9/24 15:30
  */
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = "netty.server", name = {"enabled"}, havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "netty.server", name = {"enabled"}, havingValue = "false")
 @EnableConfigurationProperties({NettyServerProperties.class})
-public class NettyServer implements ApplicationListener<ApplicationStartedEvent>, Runnable{
+public class NettyClient implements ApplicationListener<ApplicationStartedEvent>, Runnable{
 
-    private static final int MIN_SERVER_POOL_SIZE = 2;
-    private static final int MAX_SERVER_POOL_SIZE = 5;
-    private static final int MAX_TASK_QUEUE_SIZE = 200;
-    private static final int KEEP_ALIVE_TIME = 500;
-    private static final ThreadPoolExecutor WORKING_THREADS = new ThreadPoolExecutor(MIN_SERVER_POOL_SIZE,
-            MAX_SERVER_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS,
-            new LinkedBlockingQueue<>(MAX_TASK_QUEUE_SIZE),
-            new NamedThreadFactory("ServerHandlerThread", MAX_SERVER_POOL_SIZE), new ThreadPoolExecutor.CallerRunsPolicy());
+
 
     private NettyServerProperties nettyServerProperties;
     private ThreadPoolExecutor nettyExecutor = new ThreadPoolExecutor(
@@ -45,20 +39,28 @@ public class NettyServer implements ApplicationListener<ApplicationStartedEvent>
             new NamedThreadFactory("NettyServerThread", 1),
             new ThreadPoolExecutor.CallerRunsPolicy());
 
-    public NettyServer(NettyServerProperties nettyServerProperties) {
-        this.nettyServerProperties = nettyServerProperties;
-    }
+    private final ThreadPoolExecutor messageExecutor;
 
+
+    public NettyClient(NettyServerProperties nettyServerProperties) {
+        this.nettyServerProperties = nettyServerProperties;
+        messageExecutor = new ThreadPoolExecutor(
+                nettyServerProperties.getThreadFactory().getBossThreadSize(), nettyServerProperties.getThreadFactory().getBossThreadSize(),
+                Integer.MAX_VALUE, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(200),
+                new NamedThreadFactory(nettyServerProperties.getThreadFactory().getClientWorkerThreadPrefix(),
+                        nettyServerProperties.getThreadFactory().getBossThreadSize()),
+                RejectedPolicies.runsOldestTaskPolicy());
+
+    }
 
     @Override
     public void run() {
-        NettyRemotingServer nettyRemotingServer = new NettyRemotingServer(WORKING_THREADS, nettyServerProperties);
-        //server port
-        nettyRemotingServer.setListenPort(nettyServerProperties.getPort());
+        NettyRemotingClient nettyRemotingClient = new NettyRemotingClient(nettyServerProperties, null, messageExecutor);
         // register ShutdownHook
-        ShutdownHook.getInstance().addDisposable(nettyRemotingServer);
+        ShutdownHook.getInstance().addDisposable(nettyRemotingClient);
         try {
-            nettyRemotingServer.init();
+            nettyRemotingClient.init();
         } catch (Throwable e) {
             log.error("nettyServer init error:{}", e.getMessage(), e);
             System.exit(-1);

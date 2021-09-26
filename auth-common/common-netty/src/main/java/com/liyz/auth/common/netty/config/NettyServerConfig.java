@@ -30,24 +30,12 @@ import java.util.Objects;
  * @date 2021/9/23 16:38
  */
 @Slf4j
-public class NettyServerConfig {
+public class NettyServerConfig extends NettyBaseConfig {
 
-    private static final int DEFAULT_WRITE_IDLE_SECONDS = 5;
-    private static final int READIDLE_BASE_WRITEIDLE = 3;
+
     private static final String EPOLL_WORKER_THREAD_PREFIX = "NettyServerEPollWorker";
-    private static final int DEFAULT_LISTEN_PORT = 8091;
     private static final int RPC_REQUEST_TIMEOUT = 30 * 1000;
 
-    private final NettyServerProperties nettyServerProperties;
-    private final NettyProtocolType nettyProtocolType;
-    private final NettyServerType nettyServerType;
-    private int workerThreadSize;
-    @Getter
-    private final Class<? extends ServerChannel> serverChannelClazz;
-    private final Class<? extends Channel> clientChannelClazz;
-    private final int maxWriteIdleSeconds;
-    @Getter
-    private final int maxReadIdleSeconds;
     @Getter
     @Setter
     private int soBackLogSize = 1024;
@@ -66,75 +54,10 @@ public class NettyServerConfig {
     private int serverChannelMaxIdleTimeSeconds = 30;
 
     public NettyServerConfig(NettyServerProperties nettyServerProperties) {
-        this.nettyServerProperties = nettyServerProperties;
-        this.nettyProtocolType = NettyProtocolType.getType(nettyServerProperties.getType());
-        this.nettyServerType = NettyServerType.getType(nettyServerProperties.getServer());
-        String workerThreadSize = nettyServerProperties.getThreadFactory().getWorkerThreadSize();
-        if (StringUtils.isNotBlank(workerThreadSize) && StringUtils.isNumeric(workerThreadSize)) {
-            this.workerThreadSize = Integer.parseInt(workerThreadSize);
-        } else if (WorkThreadMode.getModeByName(workerThreadSize) != null) {
-            this.workerThreadSize = WorkThreadMode.getModeByName(workerThreadSize).getValue();
-        } else {
-            this.workerThreadSize = WorkThreadMode.Default.getValue();
-        }
-        switch (nettyServerType) {
-            case NIO:
-                if (nettyProtocolType == NettyProtocolType.TCP) {
-                    serverChannelClazz = NioServerSocketChannel.class;
-                    clientChannelClazz = NioSocketChannel.class;
-                } else {
-                    raiseUnsupportedTransportError();
-                    serverChannelClazz = null;
-                    clientChannelClazz = null;
-                }
-                break;
-            case NATIVE:
-                if (PlatformDependent.isWindows()) {
-                    throw new IllegalArgumentException("no native supporting for Windows.");
-                } else if (PlatformDependent.isOsx()) {
-                    if (nettyProtocolType == NettyProtocolType.TCP) {
-                        serverChannelClazz = KQueueServerSocketChannel.class;
-                        clientChannelClazz = KQueueSocketChannel.class;
-                    } else if (nettyProtocolType == NettyProtocolType.UNIX_DOMAIN_SOCKET) {
-                        serverChannelClazz = KQueueServerDomainSocketChannel.class;
-                        clientChannelClazz = KQueueDomainSocketChannel.class;
-                    } else {
-                        raiseUnsupportedTransportError();
-                        serverChannelClazz = null;
-                        clientChannelClazz = null;
-                    }
-                } else {
-                    if (nettyProtocolType == NettyProtocolType.TCP) {
-                        serverChannelClazz = EpollServerSocketChannel.class;
-                        clientChannelClazz = EpollSocketChannel.class;
-                    } else if (nettyProtocolType == NettyProtocolType.UNIX_DOMAIN_SOCKET) {
-                        serverChannelClazz = EpollServerDomainSocketChannel.class;
-                        clientChannelClazz = EpollDomainSocketChannel.class;
-                    } else {
-                        raiseUnsupportedTransportError();
-                        serverChannelClazz = null;
-                        clientChannelClazz = null;
-                    }
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("unsupported.");
-        }
-        boolean enableHeartbeat = nettyServerProperties.isHeartbeat();
-        if (enableHeartbeat) {
-            maxWriteIdleSeconds = DEFAULT_WRITE_IDLE_SECONDS;
-        } else {
-            maxWriteIdleSeconds = 0;
-        }
-        maxReadIdleSeconds = maxWriteIdleSeconds * READIDLE_BASE_WRITEIDLE;
+        super(nettyServerProperties);
     }
 
-    private void raiseUnsupportedTransportError() {
-        String errMsg = String.format("Unsupported provider type :[%s] for transport:[%s].", nettyServerProperties.getServer(),
-                nettyServerProperties.getType());
-        log.error(errMsg);
-        throw new IllegalArgumentException(errMsg);
-    }
+
 
     public boolean enableEpoll() {
         return serverChannelClazz.equals(EpollServerSocketChannel.class)

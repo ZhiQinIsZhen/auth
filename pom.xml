@@ -21,6 +21,7 @@
         <module>service-process</module>
         <module>service-job</module>
         <module>service-netty</module>
+        <module>netty-client</module>
     </modules>
 
     <properties>

@@ -34,6 +34,9 @@ public interface NettyServerConstant {
     int DEFAULT_SELECTOR_THREAD_SIZE = 1;
     int DEFAULT_BOSS_THREAD_SIZE = 1;
 
+    String DEFAULT_SELECTOR_THREAD_PREFIX = "NettyClientSelector";
+    String DEFAULT_WORKER_THREAD_PREFIX = "NettyClientWorkerThread";
+    boolean DEFAULT_ENABLE_CLIENT_BATCH_SEND_REQUEST = true;
 
     String DEFAULT_BOSS_THREAD_PREFIX = "NettyBoss";
     String DEFAULT_NIO_WORKER_THREAD_PREFIX = "NettyServerNIOWorker";

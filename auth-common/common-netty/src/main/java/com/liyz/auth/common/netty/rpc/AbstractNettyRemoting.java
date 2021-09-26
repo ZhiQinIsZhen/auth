@@ -41,7 +41,7 @@ public abstract class AbstractNettyRemoting implements Disposable {
      * The Now mills.
      */
     protected volatile long nowMills = 0;
-    private static final int TIMEOUT_CHECK_INTERNAL = 3000;
+    private static final int TIMEOUT_CHECK_INTERNAL = 10000;
     protected final Object lock = new Object();
 
     /**
