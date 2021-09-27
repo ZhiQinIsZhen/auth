@@ -22,6 +22,7 @@
         <module>service-job</module>
         <module>service-netty</module>
         <module>netty-client</module>
+        <module>service-websocket</module>
     </modules>
 
     <properties>

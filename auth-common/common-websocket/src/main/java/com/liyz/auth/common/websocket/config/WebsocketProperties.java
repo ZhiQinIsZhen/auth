@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "spring.websocket.server")
+@ConfigurationProperties(prefix = "spring.websocket")
 public class WebsocketProperties {
 
     private int port;

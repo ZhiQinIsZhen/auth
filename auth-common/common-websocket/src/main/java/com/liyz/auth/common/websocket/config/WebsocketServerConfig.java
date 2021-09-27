@@ -120,4 +120,11 @@ public class WebsocketServerConfig extends WebsocketBaseConfig{
         }
         return websocketProperties.getSocketPath();
     }
+
+    public int getSocketPort() {
+        if (websocketProperties.getPort() == 0) {
+            return DEFAULT_LISTEN_PORT;
+        }
+        return websocketProperties.getPort();
+    }
 }

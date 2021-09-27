@@ -48,6 +48,9 @@ public class WebsocketBootstrap implements RemotingBootstrap {
                     new NamedThreadFactory(websocketServerConfig.getWorkerThreadPrefix(),
                             websocketServerConfig.getServerWorkerThreads()));
         }
+        if (listenPort == 0) {
+            setListenPort(websocketServerConfig.getSocketPort());
+        }
     }
 
     /**
@@ -67,7 +70,6 @@ public class WebsocketBootstrap implements RemotingBootstrap {
      * @param listenPort the listen port
      */
     public void setListenPort(int listenPort) {
-
         if (listenPort <= 0) {
             throw new IllegalArgumentException("listen port: " + listenPort + " is invalid!");
         }
