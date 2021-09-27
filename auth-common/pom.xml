@@ -24,5 +24,6 @@
         <module>common-job</module>
         <module>common-tcp</module>
         <module>common-netty</module>
+        <module>common-websocket</module>
     </modules>
 </project>
