@@ -1,5 +1,7 @@
 package com.liyz.auth.dto;
 
+import com.liyz.auth.common.base.desen.Desensitization;
+import com.liyz.auth.common.base.desen.DesensitizationType;
 import com.liyz.auth.common.base.trace.annotation.LogIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,8 +26,8 @@ public class LoginDTO implements Serializable {
     @NotBlank(message = "登录名不能为空", groups = {Login.class})
     private String loginName;
 
-//    @Desensitization(DesensitizationType.IGNORE)
-//    @LogIgnore
+    @Desensitization(DesensitizationType.IGNORE)
+    @LogIgnore
     @ApiModelProperty(value = "密码，8-20位数字或字母组成", example = "123456789", required = true)
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$", groups = {Login.class}, message = "请输入8到20位数字和字母组合")
     private String loginPwd;

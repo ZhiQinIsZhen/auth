@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface RemoteGrantedAuthorityService {
 
-    List<GrantedAuthority> getByRoleId(Integer roleId);
+    List<GrantedAuthority> getByRoleId(Integer roleId, String group);
 
-    List<GrantedAuthority> getByRoleIds(List<Integer> roleIds);
+    List<GrantedAuthority> getByRoleIds(List<Integer> roleIds, String group);
 }

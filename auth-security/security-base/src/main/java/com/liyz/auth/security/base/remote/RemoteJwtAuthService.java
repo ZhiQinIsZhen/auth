@@ -1,5 +1,6 @@
 package com.liyz.auth.security.base.remote;
 
+import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,13 +14,23 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface RemoteJwtAuthService {
 
-    AuthUser login(final String username);
+    /**
+     * 登陆
+     *
+     * @param username
+     * @param audienceType
+     * @return
+     */
+    AuthUser login(final String username, final SecurityEnum.AudienceType audienceType);
 
-    AuthUser loadUserByUsername(final String username);
-
-    AuthUser loginByStaff(final String username);
-
-    AuthUser loadUserByUsernameByStaff(final String username);
+    /**
+     * 根据用户名获取用户信息
+     *
+     * @param username
+     * @param audienceType
+     * @return
+     */
+    AuthUser loadUserByUsername(final String username, final SecurityEnum.AudienceType audienceType);
 
     AuthUser loadUserByToken(final String token);
 

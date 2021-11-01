@@ -12,6 +12,7 @@ import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,7 @@ public class UserInfoController {
     @DubboReference
     private RemoteRuleLogService remoteRuleLogService;
 
+    @PreAuthorize("hasAuthority('ALL;/user/info')")
     @Limits(value = {@Limit(count = 1)})
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")

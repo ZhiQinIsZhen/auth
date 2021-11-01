@@ -56,22 +56,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return
      */
     private AuthUser getUserByUsername(String username) {
-        AuthUser authUser = null;
-        if (SecurityEnum.AudienceType.Member.getCode().equals(audienceType)) {
-            authUser = JwtContextHolder.getJwtAuthService().login(username);
-        } else if (SecurityEnum.AudienceType.Staff.getCode().equals(audienceType)) {
-            authUser = JwtContextHolder.getJwtAuthService().loginByStaff(username);
-        }
+        SecurityEnum.AudienceType audienceType = SecurityEnum.AudienceType.getByCode(this.audienceType);
+        AuthUser authUser = JwtContextHolder.getJwtAuthService().login(username, audienceType);
         if (Objects.isNull(authUser)) {
             throw new UsernameNotFoundException("No user found with token !");
         }
         if (authority) {
-            List<GrantedAuthority> boList = null;
-            if (SecurityEnum.AudienceType.Member.getCode().equals(audienceType)) {
-                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleIds(authUser.getRoleIds());
-            } else if (SecurityEnum.AudienceType.Staff.getCode().equals(audienceType)) {
-                boList = JwtContextHolder.getGrantedAuthorityService().getByRoleIds(authUser.getRoleIds());
-            }
+            List<GrantedAuthority> boList = JwtContextHolder.getGrantedAuthorityService().getByRoleIds(authUser.getRoleIds(), this.audienceType);
             List<AuthGrantedAuthority> authorityList = new ArrayList<>(boList.size());
             boList.stream().forEach(grantedAuthorityBO -> {
                 authorityList.add(new AuthGrantedAuthority(grantedAuthorityBO.getPermissionUrl(), grantedAuthorityBO.getMethod()));

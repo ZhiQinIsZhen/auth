@@ -26,5 +26,16 @@ public final class SecurityEnum {
 
         @Getter
         private String desc;
+
+        public static AudienceType getByCode(String code) {
+            for (AudienceType audienceType : AudienceType.values()) {
+                if (audienceType.code.equals(code)) {
+                    return audienceType;
+                }
+            }
+            return null;
+        }
     }
+
+
 }

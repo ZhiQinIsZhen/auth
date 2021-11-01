@@ -39,4 +39,6 @@ public interface SecurityConstant {
     Integer VALIDATE_TOKEN_FAIL_USERNAME = 1;
     Integer VALIDATE_TOKEN_FAIL_EXPIRED = 2;
     Integer VALIDATE_TOKEN_FAIL_OTHER_LOGIN = 3;
+
+    String DEFAULT_VERSION = "1.0.0";
 }

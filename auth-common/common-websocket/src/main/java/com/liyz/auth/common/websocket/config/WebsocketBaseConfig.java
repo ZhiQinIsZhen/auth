@@ -27,8 +27,8 @@ import java.util.Objects;
 @Slf4j
 public abstract class WebsocketBaseConfig {
 
-    private static final int DEFAULT_WRITE_IDLE_SECONDS = 5;
-    private static final int READIDLE_BASE_WRITEIDLE = 3;
+    private static final int DEFAULT_WRITE_IDLE_SECONDS = 50;
+    private static final int READIDLE_BASE_WRITEIDLE = 300;
     protected static final int DEFAULT_LISTEN_PORT = 8091;
     @Getter
     protected final Class<? extends ServerChannel> serverChannelClazz;
