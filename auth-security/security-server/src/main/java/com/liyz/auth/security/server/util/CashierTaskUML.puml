@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Process -> Process: updateAppFormByTaskParam
+Process -> Process: validateAppFormWhenPass
+Process -> Process: processPass
+Process -> Credit: creditTradeService.unfreezeAndUse(授信解冻并使用)
+Credit -> Process: fail: process interrupt
+Process -> Account: triLoanInfoService.icbcMakeLoans(工行业务放款逻辑)
+Account -> Process: fail: process interrupt
+Process -> Account: journalService.makeLoans(账务放款接口)
+Account -> Process: fail: process interrupt
+Process -> Account: rebateService.insertRebate(增加返利)
+Account -> Process: fail: process interrupt
+Process -> Account: accountReceivableService.cancelReceivable(核销应收账款)
+Account -> Process: fail: process continue
+Process -> Account: receivableDeductionService.changeDeduction(抵扣)
+Account -> Process: fail: process interrupt
+Process -> Account: makeLoansService.modifyBillingBankById
+Account -> Process: fail: process interrupt(基本不会出错)
+Process -> Account: makeLoansService.modifyMarginAndEndorseById(保证金与背书)
+Account -> Process: fail: process interrupt
+Process -> Account: PaymentOrderService paymentOrderService(银企直连)
+Account -> Process: fail: process interrupt
+Process -> Suning: repaymentService.insureConfirmReq(苏宁转账)
+Suning -> Process: fail: process interrupt
+Process -> Clms: makeLoansService.modifyMakeLoansById(同步放款信息到业务表:兼容老数据)
+Suning -> Process: fail: process interrupt
+Process -> Process: appFormService.saveForm(更新表单信息)
+@enduml

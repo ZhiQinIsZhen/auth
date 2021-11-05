@@ -1,0 +1,16 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Process -> Process: 设置流程成功状态:flowStatus = 1
+Process -> MQ: 发送放款流程结束消息 Topic: LOAN_BILL_PROCESS_END
+Process -> MQ: 发送放款流程结束消息NC Topic: nc
+
+Process --> ClmsFront: LoanSmsNotify#processData(发送消息)
+Process --> Clms: ClmsLoanSync#processData(回写clms_loan字段)
+Process --> Clms: ClmsPledgeToBankSync#processData(放款银行系统预质押)
+Process --> OpenApi: OpenApiNotifyLoanEnd#processData(开放平台)
+
+Process --> NC: 发送金额数据
+@enduml
