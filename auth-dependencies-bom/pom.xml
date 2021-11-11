@@ -23,7 +23,7 @@
         <redisson.version>3.15.0</redisson.version>
         <spring.kafka.version>2.5.1.RELEASE</spring.kafka.version>
         <seata.version>1.4.2</seata.version>
-        <elasticjob.version>3.0.0</elasticjob.version>
+        <elasticjob.version>3.0.1</elasticjob.version>
         <revision>1.0.0-SNAPSHOT</revision>
     </properties>
 
