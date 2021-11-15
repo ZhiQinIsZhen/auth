@@ -66,4 +66,13 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfoDO>
                 .eq(UserInfoDO::getLoginName, username)
         );
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateAppTimeByUsername(String username) {
+        return super.update(Wrappers.<UserInfoDO>lambdaUpdate()
+                .set(UserInfoDO::getAppTokenTime, DateUtil.currentDate())
+                .eq(UserInfoDO::getLoginName, username)
+        );
+    }
 }

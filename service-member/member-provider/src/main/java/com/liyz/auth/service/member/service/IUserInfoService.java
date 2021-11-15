@@ -37,5 +37,19 @@ public interface IUserInfoService {
      */
     Page<UserInfoDO> page(Integer pageNum, Integer pageSize);
 
+    /**
+     * 更新webToken时间
+     *
+     * @param username
+     * @return
+     */
     boolean updateByUsername(String username);
+
+    /**
+     * 更新appToken时间
+     *
+     * @param username
+     * @return
+     */
+    boolean updateAppTimeByUsername(String username);
 }

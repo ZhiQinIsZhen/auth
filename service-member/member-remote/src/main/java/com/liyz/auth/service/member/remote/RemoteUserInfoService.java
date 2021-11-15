@@ -29,4 +29,8 @@ public interface RemoteUserInfoService {
     Date loginTime(Long userId, String ip, MemberEnum.DeviceEnum deviceEnum);
 
     Date kickDownLine(Long userId, MemberEnum.DeviceEnum deviceEnum);
+
+    void testTransactionSynchronization(Long userId);
+
+    void testTransactionSynchronization1(Long userId);
 }
