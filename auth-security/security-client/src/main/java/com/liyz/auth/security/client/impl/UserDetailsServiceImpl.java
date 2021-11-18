@@ -2,9 +2,9 @@ package com.liyz.auth.security.client.impl;
 
 import com.google.common.collect.Lists;
 import com.liyz.auth.security.base.constant.SecurityEnum;
-import com.liyz.auth.security.base.user.AuthUser;
+import com.liyz.auth.common.base.util.AuthUser;
 import com.liyz.auth.security.base.user.AuthUserDetails;
-import com.liyz.auth.security.base.user.GrantedAuthority;
+import com.liyz.auth.common.base.util.GrantedAuthority;
 import com.liyz.auth.security.client.AuthGrantedAuthority;
 import com.liyz.auth.security.client.context.JwtContextHolder;
 import lombok.extern.slf4j.Slf4j;

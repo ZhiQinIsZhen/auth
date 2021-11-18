@@ -7,7 +7,7 @@ import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.open.vo.staff.UserInfoVO;
 import com.liyz.auth.security.base.annotation.Anonymous;
 import com.liyz.auth.security.base.annotation.NonAuthority;
-import com.liyz.auth.security.client.AuthContext;
+import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.liyz.auth.security.base.remote;
 
-import com.liyz.auth.security.base.user.GrantedAuthority;
+import com.liyz.auth.common.base.util.GrantedAuthority;
 
 import java.util.List;
 

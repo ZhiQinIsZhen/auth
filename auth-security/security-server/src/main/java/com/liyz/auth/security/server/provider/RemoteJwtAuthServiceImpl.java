@@ -7,7 +7,7 @@ import com.liyz.auth.security.base.constant.SecurityConstant;
 import com.liyz.auth.security.base.constant.SecurityEnum;
 import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;
 import com.liyz.auth.security.base.remote.RemoteJwtAuthService;
-import com.liyz.auth.security.base.user.AuthUser;
+import com.liyz.auth.common.base.util.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import com.liyz.auth.security.remote.RemoteLoadByUsernameService;
 import com.liyz.auth.security.remote.bo.AuthUserBO;

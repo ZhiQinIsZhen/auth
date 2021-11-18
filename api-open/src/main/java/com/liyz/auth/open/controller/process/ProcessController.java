@@ -11,7 +11,7 @@ import com.liyz.auth.open.dto.process.TaskSubmitDTO;
 import com.liyz.auth.open.dto.process.TaskTodoQueryDTO;
 import com.liyz.auth.open.vo.process.*;
 import com.liyz.auth.security.base.annotation.NonAuthority;
-import com.liyz.auth.security.client.AuthContext;
+import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.service.process.bo.*;
 import com.liyz.auth.service.process.remote.RemoteProcessService;
 import io.swagger.annotations.*;

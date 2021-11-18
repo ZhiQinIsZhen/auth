@@ -1,3 +1,5 @@
 remoteServiceExceptionFilter=com.liyz.auth.common.base.filter.dubbo.RemoteServiceExceptionFilter
 traceInfoConsumerFilter=com.liyz.auth.common.base.filter.dubbo.TraceInfoConsumerFilter
 traceInfoProviderFilter=com.liyz.auth.common.base.filter.dubbo.TraceInfoProviderFilter
+authInfoConsumerFilter=com.liyz.auth.common.base.filter.dubbo.AuthInfoConsumerFilter
+authInfoProviderFilter=com.liyz.auth.common.base.filter.dubbo.AuthInfoProviderFilter

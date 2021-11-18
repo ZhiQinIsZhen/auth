@@ -1,4 +1,4 @@
-package com.liyz.auth.security.base.user;
+package com.liyz.auth.common.base.util;
 
 import lombok.Getter;
 import lombok.Setter;

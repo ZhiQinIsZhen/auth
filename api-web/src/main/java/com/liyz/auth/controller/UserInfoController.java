@@ -2,10 +2,10 @@ package com.liyz.auth.controller;
 
 import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.base.trace.annotation.Logs;
+import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
-import com.liyz.auth.security.client.AuthContext;
 import com.liyz.auth.service.member.remote.RemoteUserInfoService;
 import com.liyz.auth.vo.UserInfoVO;
 import io.swagger.annotations.*;

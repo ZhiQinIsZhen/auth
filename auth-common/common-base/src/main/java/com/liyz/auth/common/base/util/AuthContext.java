@@ -1,6 +1,5 @@
-package com.liyz.auth.security.client;
+package com.liyz.auth.common.base.util;
 
-import com.liyz.auth.security.base.user.AuthUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

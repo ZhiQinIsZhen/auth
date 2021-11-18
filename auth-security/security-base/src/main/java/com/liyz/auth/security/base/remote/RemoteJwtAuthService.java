@@ -1,7 +1,7 @@
 package com.liyz.auth.security.base.remote;
 
+import com.liyz.auth.common.base.util.AuthUser;
 import com.liyz.auth.security.base.constant.SecurityEnum;
-import com.liyz.auth.security.base.user.AuthUser;
 import com.liyz.auth.security.base.user.ClaimDetail;
 import org.springframework.security.core.userdetails.UserDetails;
 

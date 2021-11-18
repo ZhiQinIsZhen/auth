@@ -1,7 +1,9 @@
 package com.liyz.auth.service.member.provider;
 
 import com.liyz.auth.common.base.trace.annotation.Logs;
+import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
+import com.liyz.auth.common.base.util.JsonMapperUtil;
 import com.liyz.auth.common.remote.exception.CommonExceptionCodeEnum;
 import com.liyz.auth.common.remote.exception.RemoteServiceException;
 import com.liyz.auth.security.remote.RemoteLoadByUsernameService;

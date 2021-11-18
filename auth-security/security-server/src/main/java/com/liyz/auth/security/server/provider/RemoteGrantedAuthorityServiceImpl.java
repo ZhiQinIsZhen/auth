@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.security.base.constant.SecurityConstant;
 import com.liyz.auth.security.base.remote.RemoteGrantedAuthorityService;
-import com.liyz.auth.security.base.user.GrantedAuthority;
+import com.liyz.auth.common.base.util.GrantedAuthority;
 import com.liyz.auth.security.remote.bo.GrantedAuthorityBO;
 import com.liyz.auth.security.server.util.DubboGenericServiceUtil;
 import lombok.extern.slf4j.Slf4j;
