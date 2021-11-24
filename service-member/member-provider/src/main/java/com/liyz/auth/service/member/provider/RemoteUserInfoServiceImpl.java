@@ -6,11 +6,14 @@ import com.liyz.auth.common.remote.page.Page;
 import com.liyz.auth.service.member.bo.UserInfoBO;
 import com.liyz.auth.service.member.bo.UserRegisterBO;
 import com.liyz.auth.service.member.constant.MemberEnum;
+import com.liyz.auth.service.member.event.TransactionEvent;
 import com.liyz.auth.service.member.model.UserInfoDO;
 import com.liyz.auth.service.member.remote.RemoteUserInfoService;
 import com.liyz.auth.service.member.service.IUserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -31,6 +34,9 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
 
     @Resource
     private IUserInfoService userInfoService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Logs
     @Override
@@ -82,6 +88,7 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
         UserInfoDO userInfoDO = userInfoService.getByUserId(userId);
         userInfoService.updateAppTimeByUsername(userInfoDO.getLoginName());
         testTransactionSynchronization();
+        eventPublisher.publishEvent(new TransactionEvent(userInfoDO));
     }
 
     @Override
@@ -90,6 +97,7 @@ public class RemoteUserInfoServiceImpl implements RemoteUserInfoService {
          * test transaction synchronization
          */
         testTransactionSynchronization();
+        eventPublisher.publishEvent(new TransactionEvent(userId));
     }
 
     private void testTransactionSynchronization() {

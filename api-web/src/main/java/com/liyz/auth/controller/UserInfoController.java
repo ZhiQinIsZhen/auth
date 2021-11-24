@@ -7,10 +7,13 @@ import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
 import com.liyz.auth.service.member.remote.RemoteUserInfoService;
+import com.liyz.auth.vo.UserEventVO;
 import com.liyz.auth.vo.UserInfoVO;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +43,9 @@ public class UserInfoController {
     @DubboReference
     private RemoteUserInfoService remoteUserInfoService;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Logs
     @Limits(value = {@Limit(count = 1)})
     @ApiOperation(value = "获取登陆的用户ID", notes = "获取登陆的用户ID")
@@ -57,6 +63,7 @@ public class UserInfoController {
     @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
     @GetMapping("/info")
     public Result<UserInfoVO> info() {
+        applicationContext.publishEvent(new UserEventVO(this, AuthContext.getAuthUser().getUserId()));
         return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));
     }
 
