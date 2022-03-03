@@ -40,5 +40,6 @@ public class RemoteOrderServiceImpl implements RemoteOrderService {
         orderDO.setOrderCode(orderCode);
         orderService.save(orderDO);
         remoteRuleLogService.insert(orderCode);
+        log.info("orderCode:{}", orderCode);
     }
 }

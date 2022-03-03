@@ -1,28 +1,30 @@
 package com.liyz.auth.open.controller.order;
 
 import com.liyz.auth.common.base.result.Result;
+import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
-import com.liyz.auth.open.dto.order.OrderDTO;
+import com.liyz.auth.open.vo.order.UndoLogVO;
 import com.liyz.auth.security.base.annotation.Anonymous;
-import com.liyz.auth.service.order.remote.RemoteOrderService;
+import com.liyz.auth.service.order.remote.RemoteUndoLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 注释:
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2021/9/1 15:37
+ * @date 2022/3/2 18:05
  */
 @Api(value = "订单相关接口", tags = "订单相关接口")
 @ApiResponses(value = {
@@ -34,20 +36,27 @@ import org.springframework.web.bind.annotation.RestController;
 })
 @Slf4j
 @RestController
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/log")
+public class UndoLogController {
 
     @DubboReference(timeout = 5000000)
-    private RemoteOrderService remoteOrderService;
+    private RemoteUndoLogService remoteUndoLogService;
+    @DubboReference(timeout = 5000000)
+    private com.liyz.auth.service.staff.remote.RemoteUndoLogService remoteUndoLogStaffService;
 
     @Anonymous
     @Limits(value = {@Limit(count = 1)})
-    @ApiOperation(value = "创建订单", notes = "创建订单")
-    @GetMapping("/insert")
-    public Result<Boolean> insert(@Validated(OrderDTO.Order.class) OrderDTO orderDTO) {
-        remoteOrderService.insert(orderDTO.getOrderCode());
-        return Result.success(Boolean.TRUE);
+    @ApiOperation(value = "order undoLog 查询", notes = "order undoLog 查询")
+    @GetMapping("/order")
+    public Result<List<UndoLogVO>> list() {
+        return Result.success(CommonCloneUtil.ListClone(remoteUndoLogService.list(), UndoLogVO.class));
     }
 
-
+    @Anonymous
+    @Limits(value = {@Limit(count = 1)})
+    @ApiOperation(value = "staff undoLog 查询", notes = "staff undoLog 查询")
+    @GetMapping("/staff")
+    public Result<List<UndoLogVO>> listOrder() {
+        return Result.success(CommonCloneUtil.ListClone(remoteUndoLogStaffService.list(), UndoLogVO.class));
+    }
 }
