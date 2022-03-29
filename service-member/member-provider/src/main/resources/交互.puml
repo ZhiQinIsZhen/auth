@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+title 项目评估流程时序图
+autonumber
+actor Saas用户
+Saas用户 -> Saas: 登陆
+Saas用户 -> Saas: 发起项目评估流程
+activate Saas用户
+    Saas -> Process: createProcess
+    activate Saas
+        Process -> Saas: 成功并返回processId
+        Saas -> Saas: 保存表单信息
+    deactivate Saas
+
+Boss -> Process: 一级审批
+Boss -> Process: 二级审批
+
+Process --> Saas: 流程处理结果
+Saas用户 -> Saas: 查询结果
+Saas -> Saas用户: 返回项目评估结果
+deactivate Saas用户
+@enduml

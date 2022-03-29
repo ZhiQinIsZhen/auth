@@ -4,8 +4,11 @@ import com.liyz.auth.common.base.result.Result;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
+import com.liyz.auth.open.dto.order.StockDTO;
 import com.liyz.auth.open.vo.order.UndoLogVO;
 import com.liyz.auth.security.base.annotation.Anonymous;
+import com.liyz.auth.service.order.bo.StockBO;
+import com.liyz.auth.service.order.remote.RemoteStockService;
 import com.liyz.auth.service.order.remote.RemoteUndoLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +46,8 @@ public class UndoLogController {
     private RemoteUndoLogService remoteUndoLogService;
     @DubboReference(timeout = 5000000)
     private com.liyz.auth.service.staff.remote.RemoteUndoLogService remoteUndoLogStaffService;
+    @DubboReference(timeout = 5000000)
+    private RemoteStockService remoteStockService;
 
     @Anonymous
     @Limits(value = {@Limit(count = 1)})
@@ -58,5 +63,14 @@ public class UndoLogController {
     @GetMapping("/staff")
     public Result<List<UndoLogVO>> listOrder() {
         return Result.success(CommonCloneUtil.ListClone(remoteUndoLogStaffService.list(), UndoLogVO.class));
+    }
+
+    @Anonymous
+    @Limits(value = {@Limit(count = 1)})
+    @ApiOperation(value = "减库存", notes = "减库存")
+    @GetMapping("/sub")
+    public Result<Boolean> sub(StockDTO stockDTO) {
+        remoteStockService.subAmount(CommonCloneUtil.objectClone(stockDTO, StockBO.class));
+        return Result.success(Boolean.TRUE);
     }
 }

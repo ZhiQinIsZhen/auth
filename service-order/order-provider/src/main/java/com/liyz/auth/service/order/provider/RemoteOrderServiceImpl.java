@@ -2,8 +2,10 @@ package com.liyz.auth.service.order.provider;
 
 import com.liyz.auth.common.base.trace.annotation.Logs;
 import com.liyz.auth.service.order.model.OrderDO;
+import com.liyz.auth.service.order.model.StockDO;
 import com.liyz.auth.service.order.remote.RemoteOrderService;
 import com.liyz.auth.service.order.service.IOrderService;
+import com.liyz.auth.service.order.service.IStockService;
 import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -26,7 +28,9 @@ public class RemoteOrderServiceImpl implements RemoteOrderService {
 
     @Resource
     private IOrderService orderService;
-    @DubboReference(timeout = 50000)
+    @Resource
+    private IStockService stockService;
+    @DubboReference(timeout = 500000)
     private RemoteRuleLogService remoteRuleLogService;
 
     @Override
@@ -35,11 +39,21 @@ public class RemoteOrderServiceImpl implements RemoteOrderService {
     public void insert(String orderCode) {
         String xid = RootContext.getXID();
         log.info("xid : {}", xid);
-        orderService.getById(28);
+//        orderService.getById(32);
         OrderDO orderDO = new OrderDO();
         orderDO.setOrderCode(orderCode);
         orderService.save(orderDO);
+        StockDO stockDO = new StockDO();
+        stockDO.setOrderCode(orderCode);
+        if (stockService.getByOrderCode(orderCode) == 0) {
+            stockDO.setAmount(100);
+            stockService.insert(stockDO);
+        } else {
+            stockDO.setAmount(1);
+            stockService.updateByOrderCode(stockDO);
+        }
         remoteRuleLogService.insert(orderCode);
+        int a = 100/0;
         log.info("orderCode:{}", orderCode);
     }
 }

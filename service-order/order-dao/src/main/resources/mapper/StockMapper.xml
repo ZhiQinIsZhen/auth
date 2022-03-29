@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyz.auth.service.order.dao.StockMapper">
+  <resultMap id="BaseResultMap" type="com.liyz.auth.service.order.model.StockDO">
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+  </resultMap>
+
+    <select id="getByOrderCode" resultType="java.lang.Integer">
+        select count(1) from stock where order_code = #{orderCode}
+    </select>
+
+    <insert id="insert" parameterType="com.liyz.auth.service.order.model.StockDO">
+        insert into stock (order_code, amount) values (#{orderCode}, #{amount})
+    </insert>
+
+    <update id="updateByOrderCode" parameterType="com.liyz.auth.service.order.model.StockDO">
+        update stock set amount = amount - #{amount} where order_code = #{orderCode}
+    </update>
+</mapper>
