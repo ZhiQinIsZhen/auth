@@ -1,17 +1,20 @@
 package com.liyz.auth.open.controller.staff;
 
 import com.liyz.auth.common.base.result.Result;
+import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.common.base.util.CommonCloneUtil;
 import com.liyz.auth.common.limit.annotation.Limit;
 import com.liyz.auth.common.limit.annotation.Limits;
+import com.liyz.auth.open.event.UserEvent;
 import com.liyz.auth.open.vo.staff.UserInfoVO;
 import com.liyz.auth.security.base.annotation.Anonymous;
 import com.liyz.auth.security.base.annotation.NonAuthority;
-import com.liyz.auth.common.base.util.AuthContext;
 import com.liyz.auth.service.staff.remote.RemoteRuleLogService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +44,8 @@ public class UserInfoController {
 
     @DubboReference
     private RemoteRuleLogService remoteRuleLogService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @PreAuthorize("hasAuthority('ALL;/user/info')")
     @Limits(value = {@Limit(count = 1)})
@@ -49,6 +54,7 @@ public class UserInfoController {
     @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
     @GetMapping("/info")
     public Result<UserInfoVO> info() {
+        applicationContext.publishEvent(new UserEvent(this, AuthContext.getAuthUser().getUserId()));
         return Result.success(CommonCloneUtil.objectClone(AuthContext.getAuthUser(), UserInfoVO.class));
     }
 
@@ -59,6 +65,9 @@ public class UserInfoController {
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
     public Result<Long> id() {
+        applicationContext.publishEvent(new UserEvent(this, AuthContext.getAuthUser().getUserId()));
+        String a = "a";
+        a.concat("b");
         return Result.success(Objects.isNull(AuthContext.getAuthUser()) ? null : AuthContext.getAuthUser().getUserId());
     }
 

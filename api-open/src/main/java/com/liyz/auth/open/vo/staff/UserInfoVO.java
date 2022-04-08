@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 注释:
@@ -41,4 +42,7 @@ public class UserInfoVO implements Serializable {
     @Desensitization(DesensitizationType.EMAIL)
     @ApiModelProperty(value = "邮箱", example = "example@google.com", allowEmptyValue = true)
     private String email;
+
+    @ApiModelProperty(value = "角色信息")
+    private List<Integer> roleIds;
 }
